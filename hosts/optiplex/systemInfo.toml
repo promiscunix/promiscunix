@@ -1,2 +1,4 @@
 hostName = "optiplex"
 ipAddr = "192.168.1.201/24"
+networkInterfaceName = "enp2s0"
+

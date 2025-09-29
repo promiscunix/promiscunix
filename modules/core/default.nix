@@ -39,6 +39,7 @@ in
     zellij
     yazi
     bottom
+    eza
   ];
 
   services.openssh.enable = true;

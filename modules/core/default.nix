@@ -1,18 +1,19 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, lib, systemInfo, ... }:
 
+let
+  inherit (lib) mkIf mkDefault;
+  # Safe getters with defaults so evaluation never explodes
+  hostName = systemInfo.hostName;
+
+in  
 {
-  imports =
-    [ 
-      ./hardware-configuration.nix
-    ];
-
-  boot.loader = {
+ boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
   
   networking = {
-    hostName = "optiplex"; 
+    hostName = systemInfo.hostName; 
     networkmanager.enable = true;  
   };
   
@@ -41,6 +42,6 @@
 
   services.openssh.enable = true;
 
-  system.stateVersion = "25.05"; # Did you read the comment?
+#  system.stateVersion = "25.05";
+#
 }
-

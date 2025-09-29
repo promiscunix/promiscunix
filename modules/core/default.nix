@@ -38,6 +38,7 @@ in
     fish
     zellij
     yazi
+    bottom
   ];
 
   services.openssh.enable = true;

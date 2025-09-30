@@ -1,0 +1,15 @@
+# Nix / dev env
+/result
+/result-*
+/.nix-*
+/.direnv
+/.envrc
+# Secrets (use sops-nix or agenix instead)
+secrets/
+*.age
+*.key
+*.pem
+# Editors
+*.swp
+*.tmp
+.DS_Store

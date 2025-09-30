@@ -32,6 +32,10 @@ in
     ];
   };
 
+  imports = [
+    ../systemLevel/networking  
+  ];
+  
   environment.systemPackages = with pkgs; [
     helix
     git
@@ -43,6 +47,11 @@ in
   ];
 
   services.openssh.enable = true;
+  
+  programs.ssh.startAgent = true;         # start a user ssh-agent
+  programs.ssh.agentTimeout = "1h";       # optional
+
+  
 
 #  system.stateVersion = "25.05";
 #

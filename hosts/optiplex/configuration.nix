@@ -5,7 +5,7 @@
     [ 
       ./hardware-configuration.nix
       ../../modules/core/default.nix
-      ../../modules/systemLevel/networking
+      # ../../modules/systemLevel/networking
     ];
 
 

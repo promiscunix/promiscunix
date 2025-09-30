@@ -12,10 +12,10 @@ in
     efi.canTouchEfiVariables = true;
   };
   
-  networking = {
-    hostName = systemInfo.hostName; 
-    networkmanager.enable = true;  
-  };
+  # networking = {
+  #   hostName = systemInfo.hostName; 
+  #   networkmanager.enable = true;  
+  # };
   
   boot.supportedFilesystems = [ "btrfs" ];
 
@@ -36,6 +36,13 @@ in
     ../systemLevel/networking  
   ];
   
+  environment.variables = {
+    PAGER = "less";
+    LESS  = "-FRX";   # don't page short output; raw control chars ok
+  };
+
+  environment.shellAliases.nmcli = "PAGER=cat nmcli";
+
   environment.systemPackages = with pkgs; [
     helix
     git

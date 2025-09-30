@@ -1,29 +1,29 @@
 { config, pkgs, lib, systemInfo, ... }:
 
 {
-    networking.useDHCP = false;          # don't let DHCP override
-    
     networking = {
-    hostName = systemInfo.hostName;
-    networkmanager = {
-      enable = true;  
-      ensureProfiles.profiles = {
-        "wired-static" = {
-          connection.type = "ethernet";
-          connection.id = "wired-static";
-          connection.interface-name = systemInfo.networkInterfaceName;  # Make sure this matches your interface
-          connection.autoconnect = true;
-          connection.autoconnect-priority = 100;
+      hostName = systemInfo.hostName;
+      useDHCP = false;
+      networkmanager = {
+        enable = true;
+        dns = "systemd-resolved";  
+        ensureProfiles.profiles = {
+          "wired-static" = {
+            connection.type = "ethernet";
+            connection.id = "wired-static";
+            connection.interface-name = systemInfo.networkInterfaceName;  # Make sure this matches your interface
+            connection.autoconnect = true;
+            connection.autoconnect-priority = 100;
             
-          ipv4.method = "manual";
-          ipv4.addresses = systemInfo.ipAddr;  #Desired IP address
-          ipv4.gateway = "192.168.1.254";  #Routers IP address
-          ipv4.dns = "1.1.1.1;8.8.8.8";
-          ipv6.method = "ignore";
+            ipv4.method = "manual";
+            ipv4.addresses = systemInfo.ipAddr;  #Desired IP address
+            ipv4.gateway = "192.168.1.254";  #Routers IP address
+            ipv4.dns = "1.1.1.1;8.8.8.8";
+            ipv6.method = "ignore";
+          };
         };
       };
     };
-  };
 
     systemd.services.activate-wired-static = {
     description = "Ensure NM static profile is active";
@@ -44,4 +44,7 @@
       fi
     '';
   };
+
+  services.resolved.enable = true;
+  
 }

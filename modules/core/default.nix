@@ -53,7 +53,14 @@ in
     eza
   ];
 
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+    settings = {
+      PasswordAuthentication = false; 
+      PermitRootLogin = "no";
+    };
+  };
   
   programs.ssh.startAgent = true;         # start a user ssh-agent
   programs.ssh.agentTimeout = "1h";       # optional

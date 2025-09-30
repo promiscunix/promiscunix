@@ -1,22 +1,22 @@
 { config, pkgs, lib, systemInfo, ... }:
 
-let
-  inherit (lib) mkIf mkDefault;
-  # Safe getters with defaults so evaluation never explodes
-  hostName = systemInfo.hostName;
+# let
+#   inherit (lib) mkIf mkDefault;
+#   # Safe getters with defaults so evaluation never explodes
+#   #  hostName = systemInfo.hostName;
 
-in  
+# in  
 {
+  imports = [
+    ../systemLevel/networking  
+    ../systemLevel/testing
+  ];
+
  boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
-  
-  # networking = {
-  #   hostName = systemInfo.hostName; 
-  #   networkmanager.enable = true;  
-  # };
-  
+    
   boot.supportedFilesystems = [ "btrfs" ];
 
   nixpkgs.config.allowUnfree = true;
@@ -32,26 +32,8 @@ in
     ];
   };
 
-  imports = [
-    ../systemLevel/networking  
-  ];
   
-  environment.variables = {
-    PAGER = "less";
-    LESS  = "-FRX";   # don't page short output; raw control chars ok
-  };
-
   environment.shellAliases.nmcli = "PAGER=cat nmcli";
-
-  environment.systemPackages = with pkgs; [
-    helix
-    git
-    fish
-    zellij
-    yazi
-    bottom
-    eza
-  ];
 
   services.openssh = {
     enable = true;

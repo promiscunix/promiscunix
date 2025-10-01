@@ -1,5 +1,5 @@
 {
-  description = "Minimal flake wrapping my existing configuration.nix";
+  description = "A flake that auto discovers Users and installs them based on roles per host";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable"; # or "nixos-unstable"
@@ -20,7 +20,7 @@
       userDirs     = builtins.attrNames (builtins.readDir ./users);
       userNames    = builtins.filter hasUserInfo userDirs;
       userInfos    = lib.genAttrs userNames (u: readToml (userInfoPath u));
-      # machine/user linkage
+
       # --- host factory ---
       mkHost = host: let
         systemInfo = readToml (builtins.toPath (./. + "/hosts/${host}/systemInfo.toml"));
@@ -37,28 +37,7 @@
         nixosConfigurations = {
           optiplex = mkHost "optiplex";
           # add more machines here:
-          # t14 = mkHost "t14";
-          # nuc = mkHost "nuc";
+          # desktop = mkHost "desktop";
         };
       };
-    #   systemInfo   = readToml ./hosts/optiplex/systemInfo.toml;
-    #   mainUser     = systemInfo.mainUser;
-    #   userInfo     = userInfos.${mainUser} or {};
-
-    # in {
-    #   nixosConfigurations.optiplex = nixpkgs.lib.nixosSystem {
-    #     inherit system;
-
-    #     specialArgs = {
-    #      # inherit inputs;
-    #      # systemInfo = readToml ./hosts/optiplex/systemInfo.toml;
-    #      inherit inputs systemInfo userInfos userInfo;
-    #     };
-        
-    #     modules = [
-    #       ./hosts/optiplex/configuration.nix
-    #     ];
-    #   };
-    # };
-  
 }

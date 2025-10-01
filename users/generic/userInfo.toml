@@ -1,0 +1,6 @@
+fullName = "<your name>"
+email    = "<your email>"
+userName = "<user name> - make it match dir name"
+shell    = "fish"     # informational; system sets the shell below
+editor   = "helix"    # informational for later
+roles    = ["workstation"]

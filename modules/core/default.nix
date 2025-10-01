@@ -1,4 +1,4 @@
-{ config, pkgs, lib, systemInfo, ... }:
+{ config, pkgs, lib, systemInfo, userInfo, inputs, ... }:
 
 # let
 #   inherit (lib) mkIf mkDefault;
@@ -25,11 +25,12 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  users.users.damajha = {
+  programs.fish.enable = true;
+  
+  users.users.${systemInfo.mainUser} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    packages = with pkgs; [
-    ];
+    extraGroups = [ "wheel" "networkmanager" ];
+    shell = lib.mkDefault pkgs.fish;
   };
 
   

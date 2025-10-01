@@ -1,0 +1,7 @@
+fullName = "Dale Appleby"
+email    = "promiscunix@gmail.com"
+userName = "damajha"
+shell    = "fish"     
+editor   = "helix"    
+roles    = [ "workstation", "admin"]
+

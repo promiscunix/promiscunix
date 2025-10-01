@@ -1,11 +1,5 @@
 { config, pkgs, lib, systemInfo, userInfo, inputs, ... }:
 
-# let
-#   inherit (lib) mkIf mkDefault;
-#   # Safe getters with defaults so evaluation never explodes
-#   #  hostName = systemInfo.hostName;
-
-# in  
 {
   imports = [
     ../systemLevel/networking  
@@ -33,9 +27,6 @@
     shell = lib.mkDefault pkgs.fish;
   };
 
-  
-  environment.shellAliases.nmcli = "PAGER=cat nmcli";
-
   services.openssh = {
     enable = true;
     openFirewall = true;
@@ -48,8 +39,4 @@
   programs.ssh.startAgent = true;         # start a user ssh-agent
   programs.ssh.agentTimeout = "1h";       # optional
 
-  
-
-#  system.stateVersion = "25.05";
-#
 }

@@ -36,6 +36,7 @@
       in {
         nixosConfigurations = {
           optiplex = mkHost "optiplex";
+          virtnix = mkHost "virtnix";
           # add more machines here:
           # desktop = mkHost "desktop";
         };

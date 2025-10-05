@@ -4,6 +4,7 @@
 /.nix-*
 /.direnv
 /.envrc
+/.qcow2
 # Secrets (use sops-nix or agenix instead)
 secrets/
 *.age

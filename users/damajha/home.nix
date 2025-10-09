@@ -1,11 +1,15 @@
 { config, pkgs, systemInfo, userInfo, ... }:
 
 {
+  imports = [
+    ../../modules/userLevel/helix
+  ];
   # Required:
   home.username = systemInfo.mainUser;
   home.homeDirectory = "/home/${systemInfo.mainUser}";
 
   home.packages = [
+    pkgs.kitty.terminfo
     pkgs.bat
   ];
   

@@ -1,5 +1,5 @@
-# home/damajha/home.nix  (or wherever your HM user module lives)
-{pkgs, ...}: {
+# home/damajha/home.nix
+{...}: {
   programs.fish.enable = true; # HM manages user-level fish config
 
   programs.starship = {

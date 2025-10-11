@@ -26,6 +26,8 @@
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
+  time.timeZone = "America/Vancouver";
+
   programs.fish.enable = true;
 
   users.users.${systemInfo.mainUser} = {

@@ -1,5 +1,7 @@
 # home/damajha/home.nix  (or wherever your HM user module lives)
 {pkgs, ...}: {
+  programs.fish.enable = true; # HM manages user-level fish config
+
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
@@ -7,6 +9,18 @@
     # This becomes ~/.config/starship.toml
     settings = {
       "$schema" = "https://starship.rs/config-schema.json";
+      # Keep your normal left prompt…
+      format = "$time\n$all$character";
+
+      time = {
+        disabled = false;
+        format = "[$time]($style)";
+        time_format = "%I:%M %p"; # e.g. "11:06 PM"
+        use_12hr = true; # set true if you prefer 12h
+        utc_time_offset = "local";
+        style = "bold dimmed mauve";
+      };
+
       palette = "catppuccin_mocha";
 
       palettes.catppuccin_mocha = {

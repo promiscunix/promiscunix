@@ -10,6 +10,7 @@
     ../../modules/userLevel/helix
     ../../modules/userLevel/starship
     ../../modules/userLevel/zellij
+    ../../modules/userLevel/fish
   ];
   # Required:
   home.username = systemInfo.mainUser;

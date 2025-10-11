@@ -30,10 +30,11 @@
       systemInfo = readToml (builtins.toPath (./. + "/hosts/${host}/systemInfo.toml"));
       mainUser = systemInfo.mainUser;
       userInfo = userInfos.${mainUser} or {};
+      repoRoot = ./.; # <- reliable base path for imports
     in
       nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {inherit inputs systemInfo userInfos userInfo;};
+        specialArgs = {inherit inputs systemInfo userInfos userInfo repoRoot;};
         modules = [
           (./. + "/hosts/${host}/configuration.nix")
         ];

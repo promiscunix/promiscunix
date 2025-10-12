@@ -9,7 +9,7 @@ This repository includes **virtnix**, a pre-configured virtual machine you can s
 **Build It:**
 `nixos-rebuild build-vm --flake .#virtnix`
 
-Run the command given after guild is complete
+Run the command given after build is complete
 
 **Quick start:**
 ```bash

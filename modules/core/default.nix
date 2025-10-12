@@ -1,16 +1,14 @@
 # modules/core/default.nix
 {
-  config,
   pkgs,
   lib,
   systemInfo,
-  userInfo,
-  inputs,
   ...
 }: {
   imports = [
     ../systemLevel/networking
     ../systemLevel/testing
+    ../systemLevel/optimize/shared
   ];
 
   boot.loader = {

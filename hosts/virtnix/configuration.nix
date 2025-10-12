@@ -1,13 +1,15 @@
-{ config, lib, pkgs, inputs, systemInfo, userInfo, userInfos, ... }:
-
- {
-  imports =
-    [ 
-      ./hardware-configuration.nix
-      ../../modules/core/default.nix
-      ../../modules/systemLevel/accounts
-      inputs.home-manager.nixosModules.home-manager
-    ];
+{
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: {
+  imports = [
+    ./hardware-configuration.nix
+    ../../modules/core/default.nix
+    ../../modules/systemLevel/accounts
+    inputs.home-manager.nixosModules.home-manager
+  ];
 
   environment.systemPackages = [
     inputs.home-manager.packages.${pkgs.system}.home-manager
@@ -19,7 +21,7 @@
       # Fast, guaranteed login just for the VM
       users.users.vmtest = {
         isNormalUser = true;
-        extraGroups = [ "wheel" ];
+        extraGroups = ["wheel"];
         initialPassword = "vmtest";
       };
       users.users.root.initialPassword = "root";
@@ -29,7 +31,11 @@
       services.openssh.enable = true;
       services.openssh.openFirewall = true;
       virtualisation.forwardPorts = [
-        { from = "host"; host.port = 2222; guest.port = 22; }
+        {
+          from = "host";
+          host.port = 2222;
+          guest.port = 22;
+        }
       ];
 
       # QEMU knobs
@@ -44,7 +50,6 @@
       swapDevices = lib.mkForce [];
     };
   };
-  
-  system.stateVersion = "25.05"; 
-}
 
+  system.stateVersion = "25.05";
+}

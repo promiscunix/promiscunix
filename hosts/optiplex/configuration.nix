@@ -1,12 +1,7 @@
 # hosts/optiplex/configuration.nix
 {
-  config,
-  lib,
   pkgs,
   inputs,
-  systemInfo,
-  userInfo,
-  userInfos,
   ...
 }: {
   imports = [
@@ -14,6 +9,11 @@
     ../../modules/core/default.nix
     ../../modules/systemLevel/accounts
     inputs.home-manager.nixosModules.home-manager
+  ];
+
+  boot.kernelModules = [
+    "coretemp"
+    # add others here if sensors-detect ever suggests them
   ];
 
   environment.systemPackages = [

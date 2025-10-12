@@ -63,17 +63,6 @@ in {
     shell = shellFor u;
     extraGroups = groupsFor u;
   });
-  # users.users = lib.listToAttrs (map (u: {
-  #     name = u.userName;
-  #     value = {
-  #       isNormalUser = true;
-  #       description = u.fullName or u.userName;
-  #       shell = shellOf (u.shell or "bash");
-  #       extraGroups = ["networkmanager"] ++ lib.optional (isWheel u) "wheel";
-  #       # password/hashedPassword: use Agenix/SOPS here (left out for brevity)
-  #     };
-  #   })
-  #   enrolled);
 
   # ---- Home Manager (minimal) for selected users ----
   home-manager.useGlobalPkgs = lib.mkDefault true;
@@ -86,9 +75,4 @@ in {
     _module.args = {userInfo = userInfos.${u};};
     imports = [(inputs.self + "/users/${u}/home.nix")];
   });
-  # users = lib.listToAttrs (map (u: {
-  #     name = u.userName;
-  #     value = import (repoRoot + "/users/${u.userName}/home.nix");
-  #   })
-  #   enrolled);
 }

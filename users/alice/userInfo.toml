@@ -2,6 +2,6 @@
 fullName = "Alice Example"
 email    = "alice@example.com"
 userName = "alice"
-shell    = "fish"     # informational; system sets the shell below
-editor   = "helix"    # informational for later
+shell    = "fish"   
+editor   = "helix"  
 roles    = ["workstation"]

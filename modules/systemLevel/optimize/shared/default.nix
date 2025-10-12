@@ -37,10 +37,10 @@
       options = "--delete-older-than 7d";
     };
     optimise.automatic = true;
-    autoOptimiseStore = true;
     settings = {
       experimental-features = ["nix-command" "flakes"];
       http-connections = lib.mkDefault 50;
+      auto-optimise-store = true;
     };
   };
   #### SSD TRIM

@@ -224,7 +224,7 @@ nixosConfigurations = {
 
 4. Generate hardware config on the laptop:
 ```bash
-nixos-generate-config --show-hardware-config > hosts/laptop/hardware-configuration.nix
+sudo nixos-generate-config --show-hardware-config > hosts/laptop/hardware-configuration.nix
 ```
 
 5. Build it:

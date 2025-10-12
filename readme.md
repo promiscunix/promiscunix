@@ -6,6 +6,11 @@ A role-based NixOS configuration system that automatically discovers and deploys
 
 This repository includes **virtnix**, a pre-configured virtual machine you can spin up to experiment with adding users and roles without affecting your main system.
 
+**Build It:**
+`nixos-rebuild build-vm --flake .#virtnix`
+
+Run the command given after guild is complete
+
 **Quick start:**
 ```bash
 # Initial login credentials

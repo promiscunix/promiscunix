@@ -16,6 +16,7 @@
     lm_sensors
     ethtool
     dmidecode
+    openssl
   ];
   #### Firmware & sensors
   services.fwupd.enable = true;

@@ -227,6 +227,11 @@ nixosConfigurations = {
 nixos-generate-config --show-hardware-config > hosts/laptop/hardware-configuration.nix
 ```
 
+5. Build it:
+```bash
+sudo nixos-rebuild switch --flake .#laptop
+```
+
 ### Deploying
 
 ```bash

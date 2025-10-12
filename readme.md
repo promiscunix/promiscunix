@@ -2,6 +2,19 @@
 
 A role-based NixOS configuration system that automatically discovers and deploys users across multiple hosts based on their roles, powered by simple TOML files.
 
+## 🧪 Try It Out
+
+This repository includes **virtnix**, a pre-configured virtual machine you can spin up to experiment with adding users and roles without affecting your main system.
+
+**Quick start:**
+```bash
+# Initial login credentials
+Username: vmtest
+Password: vmtest
+```
+
+Play around with creating new users, adding roles, and seeing how the system automatically manages user deployment!
+
 ## 🎯 What This Accomplishes
 
 This configuration system solves a common problem: **managing multiple users across multiple machines without duplicating configuration.**
@@ -84,7 +97,7 @@ Each user has a single source of truth:
 ```toml
 # users/damajha/userInfo.toml
 fullName = "Dale Appleby"
-email    = "promiscunix@gmail.com"
+email    = "dale@gmail.com"
 userName = "damajha"
 shell    = "fish"
 editor   = "helix"
@@ -257,7 +270,6 @@ This creates a list of users to install, then:
 - [ ] User preference files (`userPrefs.toml`) separate from identity
 - [ ] Role-based package installation
 - [ ] Per-host user overrides
-- [ ] Role inheritance/composition
 
 ## 🤝 Contributing
 
@@ -269,4 +281,4 @@ MIT
 
 ---
 
-**Why "Promiscunix"?** Because this configuration freely associates users with multiple hosts based on their roles - it's promiscuous about which users go where! 😄
+**Why "Promiscunix"?** Because I like to play fast and loose with Linux, Opensource and Nix! 😄

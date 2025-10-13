@@ -34,6 +34,8 @@
     shell = lib.mkDefault pkgs.fish;
   };
 
+  services.tailscale.enable = true;
+
   services.openssh = {
     enable = true;
     openFirewall = true;

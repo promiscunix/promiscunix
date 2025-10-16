@@ -1,6 +1,6 @@
 <user-mapping>
   <authorize username="damajha" password="!!Tucker1967!!">
-    <connection name="My Plasma RDP">
+    <connection name="Play Time">
       <protocol>rdp</protocol>
       <param name="hostname">127.0.0.1</param>
       <param name="port">3389</param>

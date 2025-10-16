@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     helix
     git
@@ -8,5 +12,8 @@
     yazi
     bottom
     eza
+    vivaldi
+    obsidian
+    zotero
   ];
 }

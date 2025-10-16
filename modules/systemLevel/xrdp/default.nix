@@ -4,13 +4,18 @@
   ...
 }: {
   services.xserver.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
+
+  # I3
+  services.xserver.displayManager.startx.enable = true;
+  services.xserver.windowManager.i3.enable = true;
+
+  # services.xserver.desktopManager.xfce.enable = true;
   # services.desktopManager.gnome.enable = true;
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.desktopManager.plasma6.enable = true;
 
   services.xrdp.enable = true;
-  services.xrdp.defaultWindowManager = "startxfce4";
+  services.xrdp.defaultWindowManager = "i3"; # opt: startxfce4
   services.xrdp.openFirewall = true;
 
   # services.xrdp = {
@@ -23,6 +28,10 @@
 
   environment.systemPackages = with pkgs; [
     freerdp
+    i3status
+    i3lock
+    dmenu
+    xterm
   ];
 
   networking.firewall.allowedTCPPorts = [3389];

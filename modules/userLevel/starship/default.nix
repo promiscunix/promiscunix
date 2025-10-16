@@ -1,28 +1,57 @@
-# home/damajha/home.nix
 {...}: {
-  programs.fish.enable = true; # HM manages user-level fish config
+  # HM manages user-level fish config
+  programs.fish.enable = true;
 
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
 
-    # This becomes ~/.config/starship.toml
+    # writes ~/.config/starship.toml
     settings = {
-      "$schema" = "https://starship.rs/config-schema.json";
-      # Keep your normal left prompt…
-      format = "$time\n$all$character";
+      add_newline = true;
 
-      time = {
-        disabled = false;
-        format = "[$time]($style)";
-        time_format = "%I:%M %p"; # e.g. "11:06 PM"
-        use_12hr = true; # set true if you prefer 12h
-        utc_time_offset = "local";
-        style = "bold dimmed mauve";
+      # Line 1: time + directory (+ git if present) … fill to right … blue elbow
+      # Line 2: matching elbow + your prompt character
+      format = ''
+        $time $directory( on $git_branch$git_status)$fill[╭─](bold blue)
+        [╰─](bold blue)$character
+      '';
+
+      # prompt symbols (keep monospace-friendly)
+      character = {
+        success_symbol = "[❯](bold blue) ";
+        error_symbol = "[❯](bold red) ";
+        vicmd_symbol = "[❮](bold yellow) ";
       };
 
-      palette = "catppuccin_mocha";
+      # keep path tidy; stops at repo root
+      directory = {
+        truncate_to_repo = true;
+        truncation_length = 3;
+      };
 
+      # git bits
+      git_branch = {
+        format = "[ $branch]($style)";
+        style = "bold purple";
+      };
+      git_status = {
+        format = "[$all_status$ahead_behind]($style)";
+        style = "yellow";
+      };
+
+      # time (12-hour)
+      time = {
+        disabled = false;
+        format = "[$time]($style) ";
+        time_format = "%I:%M %p";
+        use_12hr = true;
+        utc_time_offset = "local";
+        style = "bold dimmed mauve"; # uses palette color
+      };
+
+      # Catppuccin Mocha palette (once!)
+      palette = "catppuccin_mocha";
       palettes.catppuccin_mocha = {
         rosewater = "#f5e0dc";
         flamingo = "#f2cdcd";

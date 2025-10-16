@@ -9,6 +9,7 @@
     ../systemLevel/networking
     ../systemLevel/testing
     ../systemLevel/optimize/shared
+    ../systemLevel/fonts
   ];
 
   boot.loader = {

@@ -13,7 +13,7 @@
       # Line 1: time + directory (+ git if present) … fill to right … blue elbow
       # Line 2: matching elbow + your prompt character
       format = ''
-        $time $directory( on $git_branch$git_status)$fill[╭─](bold blue)
+        $username$hostname $time $directory( on $git_branch$git_status)$fill[╭─](bold blue)
         [╰─](bold blue)$character
       '';
 
@@ -24,10 +24,25 @@
         vicmd_symbol = "[❮](bold yellow) ";
       };
 
+      # your request: username + hostname blocks
+      username = {
+        show_always = true;
+        format = "[$user]($style)";
+        style_user = "bold mauve";
+        style_root = "bold red";
+      };
+
+      hostname = {
+        ssh_only = false; # show even when not SSH
+        ssh_symbol = ""; # no 🌐
+        format = "[@$hostname]($style)";
+        style = "bold sapphire";
+      };
+
       # keep path tidy; stops at repo root
       directory = {
         truncate_to_repo = true;
-        truncation_length = 3;
+        truncation_length = 2;
       };
 
       # git bits

@@ -1,18 +1,23 @@
-{pkgs, ...}: let
+{ pkgs, lib, ... }:
+let
   tuios = pkgs.buildGoModule rec {
     pname = "tuios";
-    version = "0.1.0"; # Update with actual version from repo
+    version = "0.1.0"; # adjust when tagging upstream
 
     src = pkgs.fetchFromGitHub {
       owner = "Gaurav-Gosain";
       repo = "tuios";
-      rev = "main"; # or specific commit/tag
-      sha256 = "sha256-09iqgxn48xpkgv8vx8wqam991vn89qv52ppfsxgmfzax11i3nykn=";
+      # Prefer a branch ref for now; can pin to a commit once stable
+      rev = "main";
+      hash = "sha256-cN8jubDeK+w8E6Mii6kyi2b/ugmqqfDk+sz1U4akBJc=";
     };
 
-    vendorHash = ""; # Will be filled by Nix
+    vendorHash = "sha256-0hxj6EUTCV7R59XJheHj9PR/oWQH+2uzYOPhVQWa0hU="; # leave empty to get expected hash from the next build
 
-    meta = with pkgs.lib; {
+    # If upstream has multiple cmd packages, set subPackages accordingly.
+    # subPackages = [ "." ];
+
+    meta = with lib; {
       description = "Terminal UI OS - Terminal Multiplexer";
       homepage = "https://github.com/Gaurav-Gosain/tuios";
       license = licenses.mit;
@@ -20,10 +25,7 @@
     };
   };
 in {
-  home.packages = [tuios];
-
-  # Optional: Add any tuios-specific configuration
-  # home.file.".config/tuios/config.toml".text = ''
-  #   # tuios configuration here
-  # '';
+  home.packages = [ tuios ];
 }
+
+

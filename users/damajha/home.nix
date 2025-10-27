@@ -15,9 +15,8 @@
   # home.username = systemInfo.mainUser;
   # home.homeDirectory = "/home/${systemInfo.mainUser}";
   programs.keychain.enable = true;
-  programs.keychain.agents = ["ssh"];
+  # programs.keychain.agents = ["ssh"];
   programs.keychain.keys = ["id_ed25519"];
-  programs.tuios.enable = true;
 
   home.packages = [
     pkgs.kitty.terminfo

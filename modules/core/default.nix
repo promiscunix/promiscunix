@@ -33,6 +33,10 @@
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager"];
     shell = lib.mkDefault pkgs.fish;
+    openssh.authorizedKeys.keys = [
+      # paste your *public* key line here, e.g.:
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpJBaYruevDAh07TajRf0kDpNA+MkQetaOTq8WAnX1d promiscunix@gmail.com "
+    ];
   };
 
   services.tailscale.enable = true;
@@ -41,10 +45,15 @@
     enable = true;
     openFirewall = true;
     settings = {
-      PasswordAuthentication = false;
+      PasswordAuthentication = true;
       PermitRootLogin = "no";
     };
   };
+
+  # openssh.authorizedKeys.keys = [
+  #   # paste your *public* key line here, e.g.:
+  #   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpJBaYruevDAh07TajRf0kDpNA+MkQetaOTq8WAnX1d promiscunix@gmail.com "
+  # ];
 
   programs.ssh.startAgent = true; # start a user ssh-agent
   programs.ssh.agentTimeout = "1h"; # optional

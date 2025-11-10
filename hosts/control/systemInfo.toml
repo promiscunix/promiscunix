@@ -1,5 +1,5 @@
-# hosts/optiplex/systemInfo.toml
-hostName = "optiplex-1"
+# hosts/control/systemInfo.toml
+hostName = "Control"
 ipAddr = "192.168.1.202/24"
 networkInterfaceName = "enp2s0"
 mainUser = "damajha"

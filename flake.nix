@@ -43,7 +43,7 @@
     nixosConfigurations = {
       optiplex = mkHost "optiplex";
       virtnix = mkHost "virtnix";
-      optiplex-1 = mkHost "optiplex-1";
+      control = mkHost "control";
       # add more machines here:
       # desktop = mkHost "desktop";
     };

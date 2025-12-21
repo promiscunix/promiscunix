@@ -12,7 +12,7 @@
       repo = "tuios";
       # Prefer a branch ref for now; can pin to a commit once stable
       rev = "main";
-      hash = "sha256-DE232gQnPRwbAudkpcdg0HwUZZmLpQzr5bBT8nk60k8=";
+      hash = "sha256-baKYf9mfoHf2rJjOieU6hkWxR0mSh/dRUXru0k6LaF4=";
     };
 
     # vendorHash = "sha256-DE232gQnPRwbAudkpcdg0HwUZZmLpQzr5bBT8nk60k8="; # leave empty to get expected hash from the next build

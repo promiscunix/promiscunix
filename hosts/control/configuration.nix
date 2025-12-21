@@ -9,6 +9,7 @@
     ./hardware-configuration.nix
     ../../modules/core/default.nix
     ../../modules/systemLevel/accounts
+    ../../modules/systemLevel/dispatcharr
     # ../../modules/systemLevel/samba
     # ../../modules/systemLevel/guacamole
     # ../../modules/systemLevel/xrdp
@@ -21,6 +22,14 @@
   ];
 
   services.dbus.enable = true; # default on NixOS unless you disabled it
+
+  services.dispatcharr = {
+    enable = true;
+    dataDir = "/var/lib/dispatcharr";
+    port = 9191;
+    backend = "docker";
+    openFirewall = true;
+  };
 
   environment.systemPackages = [
     inputs.home-manager.packages.${pkgs.system}.home-manager

@@ -56,7 +56,8 @@ in
       ports = [ "${toString cfg.port}:9191" ];
       volumes = [ "${cfg.dataDir}:/data" ];
       environment = cfg.extraEnv;
-      restartPolicy = "always";
+      autoStart = true;
+      extraOptions = [ "--restart=always" ];
     };
 
     # Ensure data directory exists

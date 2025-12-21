@@ -44,6 +44,7 @@
       optiplex = mkHost "optiplex";
       virtnix = mkHost "virtnix";
       control = mkHost "control";
+      TheTheater = mkHost "TheTheater";
       # add more machines here:
       # desktop = mkHost "desktop";
     };

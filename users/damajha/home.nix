@@ -9,7 +9,7 @@
     ../../modules/userLevel/starship
     ../../modules/userLevel/zellij
     ../../modules/userLevel/fish
-    ../../modules/userLevel/tuios
+    #   ../../modules/userLevel/tuios
   ];
 
   home.username = systemInfo.mainUser;

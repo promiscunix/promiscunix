@@ -43,8 +43,8 @@
     nixosConfigurations = {
       optiplex = mkHost "optiplex";
       virtnix = mkHost "virtnix";
-      control = mkHost "control";
-      TheTheater = mkHost "TheTheater";
+      theBullpen = mkHost "theBullpen";
+      MTAC = mkHost "MTAC";
       # add more machines here:
       # desktop = mkHost "desktop";
     };

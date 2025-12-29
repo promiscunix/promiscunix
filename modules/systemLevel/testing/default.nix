@@ -6,6 +6,8 @@
 }: {
   environment.systemPackages = with pkgs; [
     helix
+    #   dolphin
+    kitty
     git
     fish
     zellij

@@ -1,73 +1,24 @@
-{ lib, config, pkgs, ... }:
-let
-  inherit (lib) mkEnableOption mkIf mkOption types;
-  cfg = config.services.dispatcharr;
-in
 {
-  options.services.dispatcharr = {
-    enable = mkEnableOption "Dispatcharr (containerized via oci-containers)";
+  virtualisation.podman.enable = true;
+  virtualisation.oci-containers.backend = "podman";
 
-    dataDir = mkOption {
-      type = types.str;
-      default = "/var/lib/dispatcharr";
-      description = "Host directory for Dispatcharr persistent data, mounted at /data in the container.";
+  # open the web UI
+  networking.firewall.allowedTCPPorts = [9191];
+
+  systemd.tmpfiles.rules = [
+    "d /var/lib/dispatcharr 0755 root root -"
+  ];
+
+  virtualisation.oci-containers.containers.dispatcharr = {
+    image = "ghcr.io/dispatcharr/dispatcharr:latest";
+    ports = ["9191:9191"];
+    volumes = ["/var/lib/dispatcharr:/data"];
+    environment = {
+      DISPATCHARR_ENV = "aio";
+      DISPATCHARR_LOG_LEVEL = "info";
+      # These appear in Dispatcharr’s official compose example (safe to include)
+      REDIS_HOST = "localhost";
+      CELERY_BROKER_URL = "redis://localhost:6379/0";
     };
-
-    port = mkOption {
-      type = types.int;
-      default = 9191;
-      description = "Host TCP port to expose Dispatcharr web UI.";
-    };
-
-    imageTag = mkOption {
-      type = types.str;
-      default = "latest";
-      description = "Dispatcharr container image tag from ghcr.io/dispatcharr/dispatcharr.";
-    };
-
-    openFirewall = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Open the firewall for the Dispatcharr web UI port.";
-    };
-
-    backend = mkOption {
-      type = types.enum [ "docker" "podman" ];
-      default = "docker";
-      description = "OCI backend used by virtualisation.oci-containers.";
-    };
-
-    extraEnv = mkOption {
-      type = types.attrsOf types.str;
-      default = {};
-      description = "Additional environment variables for the container.";
-    };
-  };
-
-  config = mkIf cfg.enable {
-    # Enable chosen OCI backend
-    virtualisation.oci-containers.backend = cfg.backend;
-    virtualisation.docker.enable = mkIf (cfg.backend == "docker") true;
-    virtualisation.podman.enable = mkIf (cfg.backend == "podman") true;
-
-    # Container definition
-    virtualisation.oci-containers.containers.dispatcharr = {
-      image = "ghcr.io/dispatcharr/dispatcharr:${cfg.imageTag}";
-      ports = [ "${toString cfg.port}:9191" ];
-      volumes = [ "${cfg.dataDir}:/data" ];
-      environment = cfg.extraEnv;
-      autoStart = true;
-      extraOptions = [ "--restart=always" ];
-    };
-
-    # Ensure data directory exists
-    systemd.tmpfiles.rules = [
-      "d ${cfg.dataDir} 0755 root root -"
-    ];
-
-    # Open firewall if requested
-    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
   };
 }
-
-

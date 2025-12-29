@@ -1,5 +1,6 @@
-hostName = "TheTheater"
-ipAddr = "192.168.1.203/24"
+# hosts/control/systemInfo.toml
+hostName = "MTAC"
+# ipAddr = "192.168.1.202/24"
 networkInterfaceName = "enp2s0"
 mainUser = "damajha"
 
@@ -10,8 +11,3 @@ includeRoles = ["workstation"]
 extraUsers   = []       # always include (even if no role match)
 exclude      = []       # remove, even if role matched
 wheelRole    = "admin"  # who gets sudo via role (in addition to mainUser)
-
-
-
-
-

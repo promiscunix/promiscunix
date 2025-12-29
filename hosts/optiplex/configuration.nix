@@ -8,9 +8,7 @@
     ./hardware-configuration.nix
     ../../modules/core/default.nix
     ../../modules/systemLevel/accounts
-    ../../modules/systemLevel/samba
-    ../../modules/systemLevel/guacamole
-    ../../modules/systemLevel/xrdp
+    ../../modules/hyprland
     inputs.home-manager.nixosModules.home-manager
   ];
 
@@ -21,7 +19,6 @@
 
   environment.systemPackages = [
     inputs.home-manager.packages.${pkgs.system}.home-manager
-    pkgs.samba
   ];
 
   system.stateVersion = "25.05";

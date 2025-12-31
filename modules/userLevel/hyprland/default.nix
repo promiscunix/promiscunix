@@ -75,6 +75,7 @@
       bind = [
         "$mod, RETURN, exec, $terminal"
         "$mod, Q, killactive,"
+        "$mod, R, exec, hyprctl reload"
         "$mod SHIFT, E, exit,"
         "$mod, V, togglefloating,"
         "$mod, D, exec, $menu"

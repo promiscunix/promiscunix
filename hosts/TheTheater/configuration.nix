@@ -23,7 +23,7 @@
   };
 
   environment.systemPackages = [
-    inputs.home-manager.packages.${pkgs.system}.home-manager
+    inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager
   ];
 
   boot.kernelModules = [

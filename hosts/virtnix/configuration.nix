@@ -12,7 +12,7 @@
   ];
 
   environment.systemPackages = [
-    inputs.home-manager.packages.${pkgs.system}.home-manager
+    inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager
   ];
 
   # VM-only changes: applied ONLY when using `build-vm`

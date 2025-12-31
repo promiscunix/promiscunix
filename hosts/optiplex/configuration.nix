@@ -8,7 +8,7 @@
     ./hardware-configuration.nix
     ../../modules/core/default.nix
     ../../modules/systemLevel/accounts
-    ../../modules/hyprland
+    ../../modules/systemLevel/hyprland
     inputs.home-manager.nixosModules.home-manager
   ];
 

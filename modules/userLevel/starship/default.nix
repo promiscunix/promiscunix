@@ -2,6 +2,13 @@
   # HM manages user-level fish config
   programs.fish.enable = true;
 
+  # Starship override support: if user has custom config, use it instead
+  programs.fish.interactiveShellInit = ''
+    if test -f ~/.config/starship-user.toml
+        set -gx STARSHIP_CONFIG ~/.config/starship-user.toml
+    end
+  '';
+
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
@@ -96,5 +103,25 @@
         crust = "#11111b";
       };
     };
+  };
+
+  # Template for users who want full control
+  xdg.configFile."starship-user.toml.template" = {
+    text = ''
+      # Starship User Configuration
+      # Copy to ~/.config/starship-user.toml to override the Nix-managed config
+      # WARNING: This REPLACES the entire config, not just specific settings
+      #
+      # Start by copying settings from the Nix config as a base:
+      # See: modules/userLevel/starship/default.nix
+      #
+      # Example minimal config:
+      # add_newline = true
+      # format = "$directory$git_branch$character"
+      #
+      # [character]
+      # success_symbol = "[>](bold green)"
+    '';
+    force = false;
   };
 }

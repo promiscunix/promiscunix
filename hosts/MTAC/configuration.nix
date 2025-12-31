@@ -12,7 +12,7 @@ in {
     ./hardware-configuration.nix
     ../../modules/core
     (mod "accounts")
-    # (mod "arr")
+    (mod "arr")
     (mod "jellyfin")
     (mod "dispatcharr")
     (mod "optimize/shared")

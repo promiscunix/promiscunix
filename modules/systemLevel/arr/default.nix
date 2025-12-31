@@ -1,5 +1,5 @@
 #
-#  Media Services: Plex, Torrenting and Automation
+#  Arr Stack: Torrenting and Automation
 #
 {
   config,
@@ -8,13 +8,6 @@
   ...
 }: {
   services = {
-    jellyfin = {
-      enable = true;
-      openFirewall = true;
-      user = "root";
-      group = "root";
-    };
-
     radarr = {
       enable = true;
       user = "damajha";
@@ -63,6 +56,15 @@
     };
     jellyseerr.enable = true;
   };
+
+  # Patch SABnzbd config to bind to all interfaces and allow Tailscale network
+  systemd.services.sabnzbd.preStart = lib.mkAfter ''
+    if [ -f /var/lib/sabnzbd/sabnzbd.ini ]; then
+      ${pkgs.gnused}/bin/sed -i 's/^host = 127.0.0.1/host = 0.0.0.0/' /var/lib/sabnzbd/sabnzbd.ini
+      ${pkgs.gnused}/bin/sed -i 's/^local_ranges = ,$/local_ranges = 100.64.0.0\/10,/' /var/lib/sabnzbd/sabnzbd.ini
+    fi
+  '';
+
   # NOTE: this is top-level, not under `services.*`
   systemd.tmpfiles.rules = [
     "d /var/lib/sabnzbd 0775 damajha users -"

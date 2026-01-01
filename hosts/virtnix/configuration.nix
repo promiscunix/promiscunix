@@ -15,6 +15,9 @@
     inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager
   ];
 
+  # Required for Home Manager xdg.portal with useUserPackages
+  environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
+
   # VM-only changes: applied ONLY when using `build-vm`
   virtualisation.vmVariant = {
     config = {

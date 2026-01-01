@@ -1,21 +1,24 @@
+# Base SOPS configuration module
+# Individual modules (like guacamole) import sops-nix and define their own secrets.
+# This module provides shared documentation and common settings.
 {
   config,
   pkgs,
+  inputs,
   ...
 }: {
-  sops = {
-    defaultSopsFile = ./secrets/user-mapping.yaml;
-    age.keyFile = "/var/lib/sops-nix/key.txt"; # Or your preferred location
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+  ];
 
-    secrets.user-mapping = {
-      # The secret will be decrypted to a temporary location
-      # Access it via: config.sops.secrets.user-mapping.path
-      # owner = "guacamole"; # Set appropriate owner
-      # group = "guacamole"; # Set appropriate group
-      mode = "0440"; # Set appropriate permissions   # The decrypted file will be available at runtime
-    };
+  sops = {
+    # Default key file location for age decryption
+    age.keyFile = "/var/lib/sops-nix/key.txt";
   };
 
-  # Use it in your config:
-  # The decrypted content is at: config.sops.secrets.user-mapping.path
+  # Ensure the key file directory exists
+  system.activationScripts.sops-key-dir = ''
+    mkdir -p /var/lib/sops-nix
+    chmod 700 /var/lib/sops-nix
+  '';
 }

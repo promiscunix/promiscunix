@@ -5,8 +5,10 @@
 /.direnv
 /.envrc
 *.qcow2
-# Secrets (use sops-nix or agenix instead)
-secrets/
+# Secrets - ignore unencrypted, allow SOPS-encrypted yaml
+/secrets/
+!**/secrets/
+!**/secrets/*.yaml
 *.age
 *.key
 *.pem

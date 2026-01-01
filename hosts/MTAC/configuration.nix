@@ -15,6 +15,8 @@ in {
     (mod "arr")
     (mod "jellyfin")
     (mod "dispatcharr")
+    (mod "guacamole")
+    (mod "xrdp")
     (mod "optimize/shared")
     (mod "optimize/optiplex")
 

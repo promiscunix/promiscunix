@@ -1,38 +1,36 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
+  # Enable X11 (required for xrdp - Wayland not supported)
   services.xserver.enable = true;
 
-  # I3
-  services.xserver.displayManager.startx.enable = true;
-  services.xserver.windowManager.i3.enable = true;
+  # Plasma 6 desktop environment
+  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = false; # xrdp requires X11
+  };
 
-  # services.xserver.desktopManager.xfce.enable = true;
-  # services.desktopManager.gnome.enable = true;
-  # services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.plasma6.enable = true;
+  # xrdp configuration
+  services.xrdp = {
+    enable = true;
+    defaultWindowManager = "startplasma-x11";
+    openFirewall = true;
+    # Customize xrdp.ini for better performance
+    extraConfDirCommands = ''
+      # Enable high color depth and performance settings
+      ${pkgs.gnused}/bin/sed -i 's/^max_bpp=.*/max_bpp=24/' $out/xrdp.ini
+      ${pkgs.gnused}/bin/sed -i 's/^#\?bitmap_cache=.*/bitmap_cache=true/' $out/xrdp.ini
+      ${pkgs.gnused}/bin/sed -i 's/^#\?bitmap_compression=.*/bitmap_compression=true/' $out/xrdp.ini
+      ${pkgs.gnused}/bin/sed -i 's/^#\?bulk_compression=.*/bulk_compression=true/' $out/xrdp.ini
+    '';
+  };
 
-  services.xrdp.enable = true;
-  services.xrdp.defaultWindowManager = "i3"; # opt: startxfce4
-  services.xrdp.openFirewall = true;
-
-  # services.xrdp = {
-  #   enable               = true;
-  #   # Launch Plasma on X11 when an RDP client connects:
-  #   defaultWindowManager = "gnome-session";
-  #   # Automatically open the RDP port (3389) in the firewall:
-  #   openFirewall         = true;
-  # };
-
+  # RDP client tools
   environment.systemPackages = with pkgs; [
-    freerdp
-    i3status
-    i3lock
-    dmenu
-    xterm
+    freerdp # RDP client for testing
   ];
-
-  networking.firewall.allowedTCPPorts = [3389];
 }

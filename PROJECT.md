@@ -117,4 +117,47 @@ wheelRole = "admin"             # Role that grants sudo access
 
 ### Secrets Management
 
-Uses SOPS with age encryption. Configuration in `.sops.yaml` and `secrets.nix`.
+Uses SOPS with age encryption. Configuration in `.sops.yaml`.
+
+**Key locations:**
+- `.sops.yaml` - Defines which public keys can decrypt which files
+- `~/.config/sops/age/keys-desktop.txt` - Your private key (never in git)
+- `/var/lib/sops-nix/key.txt` - Host's private key for runtime decryption
+
+**Edit encrypted secrets:**
+```bash
+cd /path/to/nixfiles
+nix-shell -p sops --run "SOPS_AGE_KEY_FILE=\$HOME/.config/sops/age/keys-desktop.txt sops <path-to-secret.yaml>"
+```
+
+**Add a new host's key to `.sops.yaml`:**
+1. Get host's public key: `ssh <host> "sudo cat /etc/ssh/ssh_host_ed25519_key.pub" | nix-shell -p ssh-to-age --run ssh-to-age`
+2. Add to `.sops.yaml` under `keys:` and in `creation_rules`
+3. Re-encrypt: `sops updatekeys <path-to-secret.yaml>`
+
+### Guacamole + xrdp (Remote Desktop)
+
+Web-based remote desktop gateway using Apache Guacamole with xrdp backend.
+
+**Modules:**
+- `modules/systemLevel/guacamole/` - Guacamole server/client with SOPS secrets
+- `modules/systemLevel/xrdp/` - Plasma 6 desktop over RDP (X11 required)
+
+**To enable on a host:**
+```nix
+imports = [
+  (mod "guacamole")
+  (mod "xrdp")
+];
+```
+
+**Access:** `http://<host-ip>:8081/guacamole/`
+
+**Credentials:** Stored in `modules/systemLevel/guacamole/secrets/user-mapping.yaml` (SOPS encrypted)
+
+**To deploy to a new host:**
+1. Add host's age public key to `.sops.yaml`
+2. Re-encrypt secrets: `sops updatekeys modules/systemLevel/guacamole/secrets/user-mapping.yaml`
+3. Copy age key to host: `ssh <host> "sudo mkdir -p /var/lib/sops-nix && sudo tee /var/lib/sops-nix/key.txt > /dev/null && sudo chmod 600 /var/lib/sops-nix/key.txt" < ~/.config/sops/age/keys-desktop.txt`
+4. Import modules in host's `configuration.nix`
+5. Deploy: `nixos-rebuild switch --flake .#<hostname> ...`

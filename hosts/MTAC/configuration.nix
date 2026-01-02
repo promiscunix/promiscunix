@@ -17,6 +17,7 @@ in {
     (mod "dispatcharr")
     (mod "guacamole")
     (mod "xrdp")
+    (mod "nas-client")
     (mod "optimize/shared")
     (mod "optimize/optiplex")
 

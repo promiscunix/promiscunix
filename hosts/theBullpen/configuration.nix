@@ -1,4 +1,4 @@
-# hosts/optiplex-1/configuration.nix
+# hosts/theBullpen/configuration.nix
 {
   pkgs,
   inputs,
@@ -10,6 +10,7 @@
 in {
   imports = [
     ./hardware-configuration.nix
+    ./syncthing.nix
     ../../modules/core
     (mod "accounts")
     (mod "hyprland")
@@ -23,6 +24,9 @@ in {
   ];
 
   services.dbus.enable = true; # default on NixOS unless you disabled it
+
+  # Required for Home Manager xdg.portal with useUserPackages
+  environment.pathsToLink = ["/share/applications" "/share/xdg-desktop-portal"];
 
   environment.systemPackages = [
     inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager

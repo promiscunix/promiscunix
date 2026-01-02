@@ -74,12 +74,21 @@ in {
       folders = {
         "obsidian-vault" = {
           path = "/mnt/critical/sync/syncthing/obsidian-vault";
-          # Staggered versioning: keep versions for 180 days
           versioning = {
             type = "staggered";
             params = {
-              cleanInterval = "3600"; # Clean up every hour
-              maxAge = "15552000"; # 180 days in seconds
+              cleanInterval = "3600";
+              maxAge = "15552000"; # 180 days
+            };
+          };
+        };
+        "promiscunix" = {
+          path = "/mnt/critical/sync/syncthing/promiscunix";
+          versioning = {
+            type = "staggered";
+            params = {
+              cleanInterval = "3600";
+              maxAge = "15552000"; # 180 days
             };
           };
         };
@@ -95,6 +104,7 @@ in {
   systemd.tmpfiles.rules = [
     "d /mnt/critical/sync/syncthing 0750 ${systemInfo.mainUser} users -"
     "d /mnt/critical/sync/syncthing/obsidian-vault 0750 ${systemInfo.mainUser} users -"
+    "d /mnt/critical/sync/syncthing/promiscunix 0750 ${systemInfo.mainUser} users -"
   ];
 
   # ============================================================================

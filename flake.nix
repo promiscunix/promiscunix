@@ -44,7 +44,7 @@
       };
   in {
     nixosConfigurations = {
-      optiplex = mkHost "optiplex";
+      theLibrary = mkHost "theLibrary";
       virtnix = mkHost "virtnix";
       theBullpen = mkHost "theBullpen";
       MTAC = mkHost "MTAC";

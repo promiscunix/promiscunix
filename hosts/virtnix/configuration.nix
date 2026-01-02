@@ -3,11 +3,16 @@
   pkgs,
   inputs,
   ...
-}: {
+}: let
+  mods = ../../modules/systemLevel;
+  mod = name: mods + "/${name}";
+in {
   imports = [
     ./hardware-configuration.nix
     ../../modules/core/default.nix
-    ../../modules/systemLevel/accounts
+    (mod "accounts")
+    (mod "guacamole")
+    (mod "xrdp")
     inputs.home-manager.nixosModules.home-manager
   ];
 
@@ -38,6 +43,11 @@
           from = "host";
           host.port = 2222;
           guest.port = 22;
+        }
+        {
+          from = "host";
+          host.port = 8081;
+          guest.port = 8081;  # Guacamole web UI
         }
       ];
 

@@ -1,6 +1,6 @@
 # hosts/optiplex/systemInfo.toml
-hostName = "optiplex"
-ipAddr = "192.168.1.201/24"
+hostName = "theLibrary"
+# ipAddr = "192.168.1.201/24"
 networkInterfaceName = "enp2s0"
 mainUser = "damajha"
 

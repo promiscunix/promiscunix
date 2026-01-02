@@ -1,14 +1,17 @@
-# hosts/optiplex/configuration.nix
+# hosts/theLibrary/configuration.nix
 {
   pkgs,
   inputs,
   ...
-}: {
+}: let
+  mods = ../../modules/systemLevel;
+  mod = name: mods + "/${name}";
+in {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/core/default.nix
-    ../../modules/systemLevel/accounts
-    ../../modules/systemLevel/hyprland
+    ../../modules/core
+    (mod "accounts")
+
     inputs.home-manager.nixosModules.home-manager
   ];
 
@@ -16,6 +19,11 @@
     "coretemp"
     # add others here if sensors-detect ever suggests them
   ];
+
+  services.dbus.enable = true; # default on NixOS unless you disabled it
+
+  # Required for Home Manager xdg.portal with useUserPackages
+  environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];
 
   environment.systemPackages = [
     inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager

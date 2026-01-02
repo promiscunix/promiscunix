@@ -73,6 +73,13 @@
     options = ["compress=zstd" "noatime" "subvol=@temp"];
   };
 
+  # 4TB Storage HDD - main NAS storage
+  fileSystems."/mnt/storage" = {
+    device = "/dev/disk/by-uuid/89272f79-0b91-47f9-a791-5fa697eae35c";
+    fsType = "btrfs";
+    options = ["compress=zstd" "noatime"];
+  };
+
   swapDevices = [];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

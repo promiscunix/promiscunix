@@ -11,6 +11,7 @@ in {
     ./hardware-configuration.nix
     ../../modules/core
     (mod "accounts")
+    (mod "nas")
 
     inputs.home-manager.nixosModules.home-manager
   ];

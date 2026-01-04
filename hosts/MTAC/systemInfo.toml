@@ -2,7 +2,6 @@
 hostName = "MTAC"
 # "workstation" (default) or "server"
 profile = "server"
-tailscaleIp = "100.64.130.114"
 # ipAddr = "192.168.1.202/24"
 networkInterfaceName = "enp2s0"
 mainUser = "damajha"

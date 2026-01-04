@@ -15,7 +15,7 @@ nixos-rebuild switch \
   --flake .#<hostname> \
   --target-host <user>@<ip> \
   --build-host <user>@<ip> \
-  --use-remote-sudo
+  --sudo
 
 # Update flake inputs
 nix flake update
@@ -26,8 +26,8 @@ nix flake check
 
 ### Fish Shortcut: `nrs`
 
-From a fish shell, `nrs <host>` uses the host's `tailscaleIp` from
-`hosts/<name>/systemInfo.toml` and runs `nixos-rebuild switch` over Tailscale.
+From a fish shell, `nrs <host>` uses the host name over MagicDNS and runs
+`nixos-rebuild switch` over Tailscale.
 
 ```fish
 set -gx PROMISCUNIX_ROOT /path/to/nixfiles

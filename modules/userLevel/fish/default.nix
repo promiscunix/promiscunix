@@ -18,7 +18,7 @@
   };
 
   programs.fish.functions.nrs = {
-    description = "nixos-rebuild switch by host name (tailscaleIp from systemInfo.toml)";
+    description = "nixos-rebuild switch by host name (MagicDNS)";
     body = ''
       argparse 'u/user=' 's/sudo' -- $argv; or return 2
       if test (count $argv) -lt 1
@@ -48,14 +48,13 @@
         return 1
       end
 
-      set -l expr "let s = builtins.fromTOML (builtins.readFile \\\"$sysfile\\\"); in s.tailscaleIp or \\\"\\\""
-      set -l ip (nix eval --raw --expr "$expr")
-      if test -z "$ip"
-        echo "nrs: tailscaleIp not set in $sysfile"
-        return 1
+      set -l dns_host (string lower $host)
+      if set -q PROMISCUNIX_TAILNET_SUFFIX
+        set -l suffix (string trim -c "." $PROMISCUNIX_TAILNET_SUFFIX)
+        set dns_host "$dns_host.$suffix"
       end
 
-      nixos-rebuild switch --flake "$root#$host" --target-host "$user@$ip" $sudo_flag
+      nixos-rebuild switch --flake "$root#$host" --target-host "$user@$dns_host" $sudo_flag
     '';
   };
 

@@ -4,3 +4,5 @@ userName = "<user name> - make it match dir name"
 shell    = "fish"    
 editor   = "helix"   
 roles    = ["workstation"]
+# Optional: public SSH keys for this user
+sshKeys  = []

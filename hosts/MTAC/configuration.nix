@@ -15,6 +15,7 @@ in {
     (mod "arr")
     (mod "jellyfin")
     (mod "dispatcharr")
+    (mod "ersatztv")
     (mod "guacamole")
     (mod "xrdp")
     (mod "nas-client")

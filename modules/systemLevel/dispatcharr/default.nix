@@ -3,7 +3,7 @@
   virtualisation.oci-containers.backend = "podman";
 
   # open the web UI
-  networking.firewall.allowedTCPPorts = [9191];
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [9191];
 
   systemd.tmpfiles.rules = [
     "d /var/lib/dispatcharr 0755 root root -"

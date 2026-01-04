@@ -1,16 +1,17 @@
 # modules/core/default.nix
-{
-  pkgs,
-  lib,
-  systemInfo,
-  ...
-}: {
-  imports = [
-    ../systemLevel/networking
-    ../systemLevel/testing
-    ../systemLevel/optimize/shared
-    ../systemLevel/fonts
-  ];
+{ lib, systemInfo, ... }: let
+  profile = systemInfo.profile or "workstation";
+in {
+  imports =
+    [
+      ../systemLevel/networking
+      ../systemLevel/tailscale
+      ../systemLevel/optimize/shared
+      ../systemLevel/fonts
+    ]
+    ++ lib.optionals (profile != "server") [
+      ../systemLevel/testing
+    ];
 
   boot.loader = {
     systemd-boot.enable = true;
@@ -25,35 +26,20 @@
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
+  documentation.man.generateCaches = false;
+
   time.timeZone = "America/Vancouver";
-
-  programs.fish.enable = true;
-
-  users.users.${systemInfo.mainUser} = {
-    isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager"];
-    shell = lib.mkDefault pkgs.fish;
-    openssh.authorizedKeys.keys = [
-      # paste your *public* key line here, e.g.:
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpJBaYruevDAh07TajRf0kDpNA+MkQetaOTq8WAnX1d promiscunix@gmail.com "
-    ];
-  };
-
-  services.tailscale.enable = true;
 
   services.openssh = {
     enable = true;
-    openFirewall = true;
     settings = {
-      PasswordAuthentication = true;
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
     };
   };
 
-  # openssh.authorizedKeys.keys = [
-  #   # paste your *public* key line here, e.g.:
-  #   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpJBaYruevDAh07TajRf0kDpNA+MkQetaOTq8WAnX1d promiscunix@gmail.com "
-  # ];
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [22];
 
   programs.ssh.startAgent = true; # start a user ssh-agent
   programs.ssh.agentTimeout = "1h"; # optional

@@ -32,6 +32,7 @@
   userShellName = u: (userInfos.${u}.shell or "zsh");
   shellsUsed = builtins.map userShellName names;
   shellFor = u: pkgs.${userShellName u};
+  sshKeysFor = u: userInfos.${u}.sshKeys or [];
 
   # wheel if mainUser, has admin=true, or carries the wheelRole
   isWheel = u: let
@@ -62,6 +63,7 @@ in {
     description = userInfos.${u}.fullName or u;
     shell = shellFor u;
     extraGroups = groupsFor u;
+    openssh.authorizedKeys.keys = sshKeysFor u;
   });
 
   # ---- Home Manager (minimal) for selected users ----

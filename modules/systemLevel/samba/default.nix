@@ -2,12 +2,14 @@
 {
   config,
   pkgs,
+  systemInfo,
   ...
-}: {
+}: let
+  mainUser = systemInfo.mainUser;
+in {
   # Enable Samba services
   services.samba = {
     enable = true;
-    openFirewall = true;
 
     settings = {
       global = {
@@ -36,10 +38,10 @@
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "valid users" = "damajha";
+        "valid users" = mainUser;
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "damajha";
+        "force user" = mainUser;
         "force group" = "users";
       };
 
@@ -48,10 +50,10 @@
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "valid users" = "damajha";
+        "valid users" = mainUser;
         "create mask" = "0644";
         "directory mask" = "0755";
-        "force user" = "damajha";
+        "force user" = mainUser;
         "force group" = "users";
       };
     };
@@ -60,7 +62,6 @@
   # Samba wsdd (Web Service Discovery) for better network discovery
   services.samba-wsdd = {
     enable = true;
-    openFirewall = true;
   };
 
   # Avahi for better network discovery (especially for macOS/iOS)
@@ -86,7 +87,7 @@
     configs = {
       obsidian = {
         SUBVOLUME = "/srv/@data/@obsidian";
-        ALLOW_USERS = ["damajha"];
+        ALLOW_USERS = [mainUser];
 
         # Timeline snapshots (automatic)
         TIMELINE_CREATE = true;
@@ -103,7 +104,7 @@
 
       zotero = {
         SUBVOLUME = "/srv/@data/@zotero";
-        ALLOW_USERS = ["damajha"];
+        ALLOW_USERS = [mainUser];
 
         # Timeline snapshots (automatic)
         TIMELINE_CREATE = true;
@@ -125,6 +126,16 @@
     btrfs-progs
     snapper
     samba
+  ];
+
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+    139
+    445
+  ];
+  networking.firewall.interfaces.tailscale0.allowedUDPPorts = [
+    137
+    138
+    3702
   ];
 
   # Create necessary directories

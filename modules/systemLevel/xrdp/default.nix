@@ -18,7 +18,6 @@
   services.xrdp = {
     enable = true;
     defaultWindowManager = "startplasma-x11";
-    openFirewall = true;
     # Customize xrdp.ini for better performance
     extraConfDirCommands = ''
       # Enable high color depth and performance settings
@@ -33,4 +32,6 @@
   environment.systemPackages = with pkgs; [
     freerdp # RDP client for testing
   ];
+
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [3389];
 }

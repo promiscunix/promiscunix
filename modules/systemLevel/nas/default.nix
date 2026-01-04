@@ -15,7 +15,7 @@
 
   # User mapping for NFS (all_squash)
   # Maps all remote users to local user for consistent permissions
-  anonUid = 1000; # damajha
+  anonUid = 1000; # main user (default UID)
   anonGid = 100; # users
 
   # Common NFS export options
@@ -117,22 +117,16 @@ in {
       allowedTCPPorts = [
         2049 # NFS
         111 # portmapper/rpcbind
+        8384 # Syncthing Web UI
+        22000 # Syncthing sync protocol
       ];
       allowedUDPPorts = [
         2049 # NFS
         111 # portmapper/rpcbind
+        22000 # Syncthing sync protocol
+        21027 # Syncthing discovery
       ];
     };
-
-    # Syncthing ports (allow on all interfaces for discovery)
-    allowedTCPPorts = [
-      8384 # Syncthing Web UI
-      22000 # Syncthing sync protocol
-    ];
-    allowedUDPPorts = [
-      22000 # Syncthing sync protocol
-      21027 # Syncthing discovery
-    ];
   };
 
   # ============================================================================

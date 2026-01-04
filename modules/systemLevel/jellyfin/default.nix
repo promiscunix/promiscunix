@@ -1,6 +1,7 @@
 {
   services.jellyfin = {
     enable = true;
-    openFirewall = true; # Opens port 8096
   };
+
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [8096];
 }

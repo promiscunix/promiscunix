@@ -18,6 +18,8 @@ in {
     inputs.home-manager.nixosModules.home-manager
   ];
 
+  promiscunix.tailscale.bootstrapSsh = true;
+
   boot.kernelModules = [
     "coretemp"
     # add others here if sensors-detect ever suggests them

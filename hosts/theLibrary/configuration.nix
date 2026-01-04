@@ -16,6 +16,7 @@ in {
     inputs.home-manager.nixosModules.home-manager
   ];
 
+
   boot.kernelModules = [
     "coretemp"
     # add others here if sensors-detect ever suggests them

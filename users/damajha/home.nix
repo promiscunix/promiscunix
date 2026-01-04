@@ -1,17 +1,24 @@
 # users/damajha/home.nix
 {
+  lib,
   pkgs,
   systemInfo,
   ...
-}: {
-  imports = [
+}: let
+  profile = systemInfo.profile or "workstation";
+in {
+  imports =
+    [
     ../../modules/userLevel/helix
     ../../modules/userLevel/starship
     ../../modules/userLevel/zellij
     ../../modules/userLevel/fish
-    ../../modules/userLevel/hyprland
+    ../../modules/userLevel/transcode
     #   ../../modules/userLevel/tuios
-  ];
+    ]
+    ++ lib.optionals (profile != "server") [
+      ../../modules/userLevel/hyprland
+    ];
 
   home.username = systemInfo.mainUser;
   home.homeDirectory = "/home/${systemInfo.mainUser}";
@@ -25,6 +32,8 @@
   ];
 
   home.stateVersion = "25.05";
+
+  services.transcodeHevc.enable = systemInfo.hostName == "theLibrary";
 
   programs.home-manager.enable = true;
 }

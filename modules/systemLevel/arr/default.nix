@@ -5,28 +5,28 @@
   config,
   pkgs,
   lib,
+  systemInfo,
   ...
-}: {
+}: let
+  mainUser = systemInfo.mainUser;
+in {
   services = {
     radarr = {
       enable = true;
-      user = "damajha";
+      user = mainUser;
       group = "users";
-      openFirewall = true;
     };
     sonarr = {
       #8989
       enable = true;
-      user = "damajha";
+      user = mainUser;
       group = "users";
-      openFirewall = true;
     };
 
     sabnzbd = {
       enable = true;
-      user = "damajha";
+      user = mainUser;
       group = "users";
-      openFirewall = true;
       configFile = "/var/lib/sabnzbd/sabnzbd.ini"; # optional; defaults to state dir
     };
 
@@ -34,25 +34,20 @@
     #      enable = true;
     #      user = "root";
     #      group = "users";
-    #      openFirewall = true;
     #    };
     prowlarr = {
       enable = true;
-      openFirewall = true;
     };
     readarr = {
       enable = true;
-      user = "damajha";
+      user = mainUser;
       group = "users";
-      openFirewall = true;
     };
     deluge = {
       enable = true;
       web.enable = true;
-      user = "damajha";
+      user = mainUser;
       group = "users";
-      openFirewall = true;
-      web.openFirewall = true;
     };
     jellyseerr.enable = true;
   };
@@ -67,10 +62,21 @@
 
   # NOTE: this is top-level, not under `services.*`
   systemd.tmpfiles.rules = [
-    "d /var/lib/sabnzbd 0775 damajha users -"
-    "d /var/lib/sabnzbd/Downloads 0775 damajha users -"
-    "d /var/lib/sabnzbd/Downloads/incomplete 0775 damajha users -"
-    "d /var/lib/sabnzbd/Downloads/complete 0775 damajha users -"
+    "d /var/lib/sabnzbd 0775 ${mainUser} users -"
+    "d /var/lib/sabnzbd/Downloads 0775 ${mainUser} users -"
+    "d /var/lib/sabnzbd/Downloads/incomplete 0775 ${mainUser} users -"
+    "d /var/lib/sabnzbd/Downloads/complete 0775 ${mainUser} users -"
+  ];
+
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+    7878 # radarr
+    8989 # sonarr
+    8080 # sabnzbd
+    9696 # prowlarr
+    8787 # readarr
+    8112 # deluge web
+    58846 # deluge daemon
+    5055 # jellyseerr
   ];
 }
 # literally can't be bothered anymore with user permissions.
@@ -82,4 +88,3 @@
 # Deluge:
 #   Connection Manager: localhost:58846
 #   Preferences: Change download folder and enable Plugins-label
-

@@ -5,7 +5,7 @@
 # AFTER DEPLOYMENT - Complete setup via web UI (http://localhost:8384):
 #
 # 1. Get theLibrary's Device ID:
-#    - SSH to theLibrary: ssh damajha@100.82.217.116
+#    - SSH to theLibrary: ssh <mainUser>@100.82.217.116
 #    - Run: syncthing cli show system | grep myID
 #    - Or check theLibrary's web UI at http://100.82.217.116:8384
 #
@@ -24,18 +24,21 @@
   config,
   lib,
   pkgs,
+  systemInfo,
   ...
-}: {
+}: let
+  mainUser = systemInfo.mainUser;
+in {
   services.syncthing = {
     enable = true;
 
     # Run as main user
-    user = "damajha";
+    user = mainUser;
     group = "users";
 
     # Data and config directories
-    dataDir = "/home/damajha/.local/share/syncthing";
-    configDir = "/home/damajha/.config/syncthing";
+    dataDir = "/home/${mainUser}/.local/share/syncthing";
+    configDir = "/home/${mainUser}/.config/syncthing";
 
     # Web UI accessible from Tailscale network
     guiAddress = "0.0.0.0:8384";
@@ -53,7 +56,7 @@
       # Pre-configured folders
       folders = {
         "promiscunix" = {
-          path = "/home/damajha/vaults/promiscunix";
+          path = "/home/${mainUser}/vaults/promiscunix";
           # Staggered versioning: keep versions for 180 days
           versioning = {
             type = "staggered";
@@ -75,21 +78,19 @@
 
   # Ensure directories exist
   systemd.tmpfiles.rules = [
-    "d /home/damajha/.local/share/syncthing 0750 damajha users -"
-    "d /home/damajha/.config/syncthing 0750 damajha users -"
-    "d /home/damajha/vaults 0750 damajha users -"
-    "d /home/damajha/vaults/promiscunix 0750 damajha users -"
+    "d /home/${mainUser}/.local/share/syncthing 0750 ${mainUser} users -"
+    "d /home/${mainUser}/.config/syncthing 0750 ${mainUser} users -"
+    "d /home/${mainUser}/vaults 0750 ${mainUser} users -"
+    "d /home/${mainUser}/vaults/promiscunix 0750 ${mainUser} users -"
   ];
 
   # Firewall rules for Syncthing
-  networking.firewall = {
-    allowedTCPPorts = [
-      8384   # Web UI
-      22000  # Sync protocol
-    ];
-    allowedUDPPorts = [
-      22000  # Sync protocol
-      21027  # Discovery
-    ];
-  };
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+    8384   # Web UI
+    22000  # Sync protocol
+  ];
+  networking.firewall.interfaces.tailscale0.allowedUDPPorts = [
+    22000  # Sync protocol
+    21027  # Discovery
+  ];
 }

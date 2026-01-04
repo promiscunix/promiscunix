@@ -24,6 +24,16 @@ nix flake update
 nix flake check
 ```
 
+### Fish Shortcut: `nrs`
+
+From a fish shell, `nrs <host>` uses the host's `tailscaleIp` from
+`hosts/<name>/systemInfo.toml` and runs `nixos-rebuild switch` over Tailscale.
+
+```fish
+set -gx PROMISCUNIX_ROOT /path/to/nixfiles
+nrs theLibrary
+```
+
 ## Architecture Overview
 
 This is **Promiscunix** - a role-based NixOS configuration system that automatically provisions users across hosts based on role matching.

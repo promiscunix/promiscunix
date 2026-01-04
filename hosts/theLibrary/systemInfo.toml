@@ -1,5 +1,8 @@
 # hosts/optiplex/systemInfo.toml
 hostName = "theLibrary"
+# "workstation" (default) or "server"
+profile = "server"
+tailscaleIp = "100.82.217.116"
 # ipAddr = "192.168.1.201/24"
 networkInterfaceName = "enp2s0"
 mainUser = "damajha"

@@ -107,6 +107,7 @@ userName = "damajha"
 shell    = "fish"
 editor   = "helix"
 roles    = ["workstation", "admin"]
+sshKeys  = ["ssh-ed25519 AAAA... user@example.com"]
 ```
 
 **Roles** determine which hosts this user appears on.
@@ -181,6 +182,7 @@ userName = "alice"
 shell    = "zsh"
 editor   = "vim"
 roles    = ["server", "developer"]
+sshKeys  = ["ssh-ed25519 AAAA... alice@example.com"]
 ```
 
 3. Create `users/alice/home.nix`:
@@ -241,6 +243,44 @@ nixos-rebuild switch \
   --target-host damajha@192.168.1.201 \
   --build-host damajha@192.168.1.201 \
   --use-remote-sudo
+```
+
+### Remote Install (Tailscale-First)
+
+This flow keeps SSH open only long enough to join the tailnet.
+
+1. Create a Tailscale auth key (recommended: reusable + tagged)
+2. Encrypt it:
+```bash
+nix-shell -p sops --run "SOPS_AGE_KEY_FILE=$HOME/.config/sops/age/keys-desktop.txt sops secrets/tailscale.yaml"
+```
+```yaml
+tailscale_authkey: tskey-xxxxxxxxxxxxxxxxxxxx
+```
+3. Temporarily enable LAN SSH on the host:
+```nix
+promiscunix.tailscale.bootstrapSsh = true;
+```
+4. Copy the SOPS key to the host:
+```bash
+ssh root@<lan-ip> "sudo mkdir -p /var/lib/sops-nix && sudo chmod 700 /var/lib/sops-nix"
+cat ~/.config/sops/age/keys-desktop.txt | \
+  ssh root@<lan-ip> "sudo tee /var/lib/sops-nix/key.txt > /dev/null && sudo chmod 600 /var/lib/sops-nix/key.txt"
+```
+5. First rebuild (LAN):
+```bash
+nixos-rebuild switch --flake .#<hostname> --target-host root@<lan-ip>
+```
+6. Remove `bootstrapSsh` and rebuild again to lock SSH to Tailscale.
+
+### Fish Shortcut: `nrs`
+
+From a fish shell, `nrs <host>` uses the host's `tailscaleIp` from
+`hosts/<name>/systemInfo.toml` and runs `nixos-rebuild switch` over Tailscale.
+
+```fish
+set -gx PROMISCUNIX_ROOT /path/to/nixfiles
+nrs theLibrary
 ```
 
 ## 🎓 Design Principles

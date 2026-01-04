@@ -5,6 +5,10 @@
 /.direnv
 /.envrc
 *.qcow2
+# Local-only content
+/docs/
+/.claude/
+AGENTS.md
 # Secrets - ignore unencrypted, allow SOPS-encrypted yaml
 /secrets/
 !**/secrets/
@@ -16,4 +20,3 @@
 *.swp
 *.tmp
 .DS_Store
-

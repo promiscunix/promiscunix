@@ -37,7 +37,6 @@ in {
 
       # Make SSH and port forward work in the VM
       services.openssh.enable = true;
-      services.openssh.openFirewall = true;
       virtualisation.forwardPorts = [
         {
           from = "host";

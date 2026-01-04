@@ -87,5 +87,5 @@ EOF
   };
 
   # Firewall: only expose web UI port, keep guacd internal
-  networking.firewall.allowedTCPPorts = [8081];
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [8081];
 }

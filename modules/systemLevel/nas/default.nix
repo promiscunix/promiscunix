@@ -12,6 +12,8 @@
 }: let
   # Tailscale subnet - covers all Tailscale IPs (100.64.0.0 - 100.127.255.255)
   tailscaleSubnet = "100.64.0.0/10";
+  # LAN subnet for local clients
+  lanSubnet = "192.168.0.0/24";
 
   # User mapping for NFS (all_squash)
   # Maps all remote users to local user for consistent permissions
@@ -27,18 +29,22 @@ in {
 
   services.nfs.server = {
     enable = true;
+    # Use fixed RPC ports so firewall rules can be explicit.
+    mountdPort = 20048;
+    statdPort = 32765;
+    lockdPort = 32767;
 
     # NFSv4 exports
     # Format: <path> <client>(options)
     exports = ''
       # Media exports (read-write for arr stack access)
-      /mnt/storage/@media          ${tailscaleSubnet}(${nfsOpts})
-      /mnt/storage/@books          ${tailscaleSubnet}(${nfsOpts})
-      /mnt/storage/@downloads      ${tailscaleSubnet}(${nfsOpts})
-      /mnt/storage/@documents      ${tailscaleSubnet}(${nfsOpts})
+      /mnt/storage/@media          ${tailscaleSubnet}(${nfsOpts}) ${lanSubnet}(${nfsOpts})
+      /mnt/storage/@books          ${tailscaleSubnet}(${nfsOpts}) ${lanSubnet}(${nfsOpts})
+      /mnt/storage/@downloads      ${tailscaleSubnet}(${nfsOpts}) ${lanSubnet}(${nfsOpts})
+      /mnt/storage/@documents      ${tailscaleSubnet}(${nfsOpts}) ${lanSubnet}(${nfsOpts})
 
       # Backup exports (for restic/borg access from other machines)
-      /mnt/critical/backups        ${tailscaleSubnet}(${nfsOpts})
+      /mnt/critical/backups        ${tailscaleSubnet}(${nfsOpts}) ${lanSubnet}(${nfsOpts})
     '';
   };
 
@@ -117,15 +123,25 @@ in {
       allowedTCPPorts = [
         2049 # NFS
         111 # portmapper/rpcbind
+        20048 # mountd
+        32765 # statd
+        32767 # lockd
         8384 # Syncthing Web UI
         22000 # Syncthing sync protocol
       ];
       allowedUDPPorts = [
         2049 # NFS
         111 # portmapper/rpcbind
+        20048 # mountd
+        32765 # statd
+        32767 # lockd
         22000 # Syncthing sync protocol
         21027 # Syncthing discovery
       ];
+    };
+    interfaces.${systemInfo.networkInterfaceName} = {
+      allowedTCPPorts = [2049 111 20048 32765 32767];
+      allowedUDPPorts = [2049 111 20048 32765 32767];
     };
   };
 

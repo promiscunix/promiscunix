@@ -8,11 +8,11 @@
   pkgs,
   ...
 }: let
-  # theLibrary's Tailscale IP
-  nasServer = "100.82.217.116";
+  # theLibrary's LAN IP
+  nasServer = "192.168.0.152";
 
   # Common NFS mount options
-  nfsOpts = ["nfsvers=4" "soft" "timeo=15" "retrans=3" "_netdev" "x-systemd.automount" "x-systemd.idle-timeout=600"];
+  nfsOpts = ["nfsvers=4" "hard" "timeo=600" "retrans=2" "_netdev" "x-systemd.automount" "x-systemd.idle-timeout=600"];
 in {
   # Enable NFS client support
   services.rpcbind.enable = true;

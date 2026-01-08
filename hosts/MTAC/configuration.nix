@@ -3,6 +3,7 @@
   pkgs,
   inputs,
   lib,
+  systemInfo,
   ...
 }: let
   mods = ../../modules/systemLevel;
@@ -31,6 +32,12 @@ in {
   ];
 
   services.dbus.enable = true; # default on NixOS unless you disabled it
+
+  networking.firewall.interfaces.${systemInfo.networkInterfaceName} = {
+    allowedTCPPorts = [8096];
+    # Jellyfin LAN discovery uses UDP 7359.
+    allowedUDPPorts = [7359];
+  };
 
   environment.systemPackages = [
     inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager

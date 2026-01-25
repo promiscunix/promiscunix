@@ -12,6 +12,8 @@
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
 
     # writes ~/.config/starship.toml
     settings = {

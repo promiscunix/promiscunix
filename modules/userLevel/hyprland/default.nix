@@ -13,7 +13,7 @@
 
       # Modifier and common programs
       "$mod" = "SUPER";
-      "$terminal" = "kitty";
+      "$terminal" = "kitty -e zellij";
       "$menu" = "rofi -show drun";
 
       # General appearance

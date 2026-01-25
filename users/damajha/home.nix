@@ -11,8 +11,10 @@ in {
     [
     ../../modules/userLevel/helix
     ../../modules/userLevel/starship
+    ../../modules/userLevel/shell-defaults
     ../../modules/userLevel/zellij
     ../../modules/userLevel/fish
+    ../../modules/userLevel/yazi
     ../../modules/userLevel/transcode
     #   ../../modules/userLevel/tuios
     ]

@@ -23,6 +23,18 @@ Promiscunix is my answer: role-based user provisioning, a small host “factory�
 
 ## Design overview
 
+## Repository map (quick navigation)
+
+- `flake.nix` — flake inputs and host factory (`mkHost`)
+- `hosts/<name>/` — per-host system definitions (`systemInfo.toml`, `configuration.nix`, hardware files)
+- `users/<name>/` — user identity + Home Manager entrypoints (`userInfo.toml`, `home.nix`)
+- `modules/core/` — baseline modules imported by hosts
+- `modules/systemLevel/` — machine/service modules (networking, services, optimization)
+- `modules/userLevel/` — user-space modules (shell/editor/UI tooling)
+- `.sops.yaml` — SOPS rules and key mappings
+- `PROJECT.md` — operator/deployment guide and architecture quick reference
+
+
 ### 1) Role-based users and hosts (the core idea)
 
 - Each user lives in `users/<name>/userInfo.toml` and has roles like `workstation` or `admin`.

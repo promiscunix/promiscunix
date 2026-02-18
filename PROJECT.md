@@ -117,13 +117,14 @@ wheelRole = "admin"             # Role that grants sudo access
 
 ### Current Hosts
 
+(Aligned with `flake.nix` `nixosConfigurations`.)
+
 | Host | Purpose |
 |------|---------|
-| optiplex | Workstation with Hyprland |
-| MTAC | Media center (Jellyfin, *arr stack, Dispatcharr) |
-| theBullpen | Desktop with Hyprland |
-| TheTheater | Desktop |
+| theLibrary | Primary library/server host |
 | virtnix | VM for testing |
+| theBullpen | Desktop with Hyprland |
+| MTAC | Media center (Jellyfin, *arr stack, Dispatcharr) |
 
 ### Secrets Management
 

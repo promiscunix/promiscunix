@@ -54,7 +54,7 @@
       };
 
       dwindle = {
-        pseudotile = true;
+        #       pseudotile = true;
         preserve_split = true;
       };
 
@@ -81,7 +81,7 @@
         "$mod, D, exec, $menu"
         "$mod, F, fullscreen,"
         "$mod, P, pseudo,"
-        "$mod, J, togglesplit,"
+        #        "$mod, J, togglesplit,"
 
         # Move focus
         "$mod, left, movefocus, l"
@@ -135,12 +135,13 @@
     '';
   };
 
-  # Create empty override file (prevents Hyprland error on missing source)
-  xdg.configFile."hypr/user-overrides.conf" = {
+  # Provide a writable template instead of managing the live override file.
+  # The actual ~/.config/hypr/user-overrides.conf is meant to be user-owned.
+  xdg.configFile."hypr/user-overrides.conf.template" = {
     text = ''
       # Hyprland User Overrides
-      # This file IS sourced by the Nix-managed config
-      # Edit freely - Nix will not overwrite this file
+      # Copy this file to ~/.config/hypr/user-overrides.conf
+      # This file is NOT managed by Nix - customize freely!
       #
       # Examples:
       # $terminal = alacritty

@@ -1,6 +1,8 @@
 # modules/systemLevel/optimize/optiplex/default.nix
 # Intel Quick Sync hardware transcoding for Optiplex 3090 (UHD 630)
 {
+  config,
+  lib,
   pkgs,
   ...
 }: {
@@ -15,8 +17,11 @@
     ];
   };
 
-  # Add jellyfin user to video/render groups for hardware access
-  users.users.jellyfin.extraGroups = ["video" "render"];
+  # Add jellyfin user to video/render groups for hardware access,
+  # but only on hosts that actually enable Jellyfin.
+  users.users = lib.mkIf config.services.jellyfin.enable {
+    jellyfin.extraGroups = ["video" "render"];
+  };
 
   # Environment variable to use the newer iHD driver
   environment.sessionVariables = {

@@ -14,6 +14,9 @@ in {
     ../../modules/core
     (mod "accounts")
     (mod "hyprland")
+    (mod "hermes")
+    (mod "optimize/shared")
+    (mod "optimize/optiplex")
 
     inputs.home-manager.nixosModules.home-manager
   ];

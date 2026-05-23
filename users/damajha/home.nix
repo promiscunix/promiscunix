@@ -35,6 +35,7 @@ in {
   home.packages = [
     pkgs.kitty.terminfo
     pkgs.bat
+    pkgs.gh
     pkgs.mpv
     pkgs.vlc
   ];

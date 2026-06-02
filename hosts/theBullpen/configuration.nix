@@ -15,6 +15,7 @@ in {
     (mod "accounts")
     (mod "hyprland")
     (mod "hermes")
+    (mod "network-tools")
     (mod "optimize/shared")
     (mod "optimize/optiplex")
 

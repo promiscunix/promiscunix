@@ -35,7 +35,7 @@
 
     settings = {
       model = {
-        default = "gpt-5.4";
+        default = "gpt-5.5";
         provider = "openai-codex";
       };
 
@@ -116,6 +116,10 @@
   # - damajha remains the owner of human-facing content
   # - gibbs gets explicit ACL access where Hermes needs to read/write
   # - default ACLs preserve shared access for future files created by either side
+  systemd.services.hermes-agent.environment.PYTHONPATH = "/var/lib/hermes/python-patches";
+
+  systemd.services.hermes-agent.serviceConfig.TimeoutStopSec = "210s";
+
   system.activationScripts."hermes-user-content-acl" = ''
     if [ -d /home/damajha ]; then
       ${pkgs.acl}/bin/setfacl -m u:gibbs:x /home/damajha || true
@@ -130,6 +134,12 @@
       chown -R damajha:users /home/damajha/Documents/Obsidian\ Vault || true
       ${pkgs.acl}/bin/setfacl -R -m u:gibbs:rwX,u:damajha:rwX /home/damajha/Documents/Obsidian\ Vault || true
       ${pkgs.acl}/bin/setfacl -R -d -m u:gibbs:rwX,u:damajha:rwX /home/damajha/Documents/Obsidian\ Vault || true
+    fi
+
+    if [ -d /home/damajha/projects/docujest-master ]; then
+      chown -R damajha:users /home/damajha/projects/docujest-master || true
+      ${pkgs.acl}/bin/setfacl -R -m u:gibbs:rwX,u:damajha:rwX /home/damajha/projects/docujest-master || true
+      ${pkgs.acl}/bin/setfacl -R -d -m u:gibbs:rwX,u:damajha:rwX /home/damajha/projects/docujest-master || true
     fi
   '';
 }

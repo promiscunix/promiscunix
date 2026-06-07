@@ -12,6 +12,10 @@
       url = "github:NousResearch/hermes-agent";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    operator-dashboard = {
+      url = "path:/var/lib/hermes/workspace/operator-dashboard";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {

@@ -16,6 +16,7 @@ in {
     (mod "hyprland")
     (mod "hermes")
     (mod "network-tools")
+    (mod "operator-dashboard")
     (mod "optimize/shared")
     (mod "optimize/optiplex")
 

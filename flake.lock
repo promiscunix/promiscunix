@@ -110,8 +110,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1780810343,
-        "narHash": "sha256-ZV1C0pQ+qnkH0FJQNPuaaGGeU+jK79n27xJK0lnBrLQ=",
+        "lastModified": 1780811393,
+        "narHash": "sha256-RtWPAo6a06GWx30TK3dehPfxMerYyrsTuqRjG7DduiI=",
         "path": "/var/lib/hermes/workspace/operator-dashboard",
         "type": "path"
       },

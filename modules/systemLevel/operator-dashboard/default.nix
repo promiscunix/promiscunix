@@ -15,5 +15,11 @@
     openFirewall = true;
     obsidianVaultPath = "/home/damajha/Documents/Obsidian Vault";
     dataDir = "/home/damajha/Documents/Obsidian Vault/04 Maps/Operator Dashboard MVP/data";
+    weather = {
+      location = "Maple Ridge, BC";
+      latitude = 49.2193;
+      longitude = -122.5984;
+      timezone = "America/Vancouver";
+    };
   };
 }

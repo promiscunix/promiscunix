@@ -10,6 +10,7 @@ in {
       ../systemLevel/fonts
     ]
     ++ lib.optionals (profile != "server") [
+      ../systemLevel/audio
       ../systemLevel/testing
     ];
 

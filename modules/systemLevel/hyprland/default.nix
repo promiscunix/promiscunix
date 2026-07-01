@@ -9,7 +9,7 @@
     pkgs.rofi
     pkgs.dunst
     pkgs.libnotify
-    pkgs.swww
+    pkgs.awww
     pkgs.networkmanagerapplet
     pkgs.pyprland
     pkgs.hyprcursor

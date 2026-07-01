@@ -27,7 +27,7 @@ in {
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
-  documentation.man.generateCaches = false;
+  documentation.man.cache.enable = false;
 
   time.timeZone = "America/Vancouver";
 

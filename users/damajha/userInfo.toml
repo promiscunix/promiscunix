@@ -5,4 +5,5 @@ userName = "damajha"
 shell    = "fish"     
 editor   = "helix"    
 roles    = [ "workstation", "admin"]
-sshKeys  = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpJBaYruevDAh07TajRf0kDpNA+MkQetaOTq8WAnX1d promiscunix@gmail.com" ]
+sshKeys  = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOpJBaYruevDAh07TajRf0kDpNA+MkQetaOTq8WAnX1d promiscunix@gmail.com",
+             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFc0Q7ALvEoAkXukA+pUq359WJ/28QLUxvQAphe310yB pangolin-browser-thebullpen" ]

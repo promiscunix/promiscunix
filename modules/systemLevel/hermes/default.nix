@@ -39,6 +39,11 @@
         provider = "openai-codex";
       };
 
+      fallback_model = {
+        provider = "kimi-coding";
+        model = "kimi-k2.6";
+      };
+
       telegram = {
         allow_from = ["8028674484"];
       };
@@ -54,7 +59,30 @@
         threshold = 0.85;
       };
 
-      toolsets = ["all"];
+      # Keep Telegram sessions lean: avoid exposing every integration/schema by
+      # default. Add heavyweight toolsets (browser, image/video generation,
+      # Discord/admin, Home Assistant, etc.) only when needed.
+      toolsets = [
+        "terminal"
+        "file"
+        "web"
+        "code_execution"
+        "vision"
+        "skills"
+        "memory"
+        "session_search"
+        "cronjob"
+        "messaging"
+        "delegation"
+        "todo"
+        "clarify"
+      ];
+
+      # Pilot: enable Mugen0815/hermes-cortex from
+      # /var/lib/hermes/.hermes/plugins/cortex. Runtime hooks remain disabled
+      # in /var/lib/hermes/.hermes/cortex/config.yaml; this only makes the
+      # explicit vault_search/vault_read_note/vault_build_context tools visible.
+      plugins.enabled = ["cortex"];
 
       agent = {
         max_turns = 60;
@@ -116,7 +144,9 @@
   # - damajha remains the owner of human-facing content
   # - gibbs gets explicit ACL access where Hermes needs to read/write
   # - default ACLs preserve shared access for future files created by either side
-  systemd.services.hermes-agent.environment.PYTHONPATH = "/var/lib/hermes/python-patches";
+  systemd.services.hermes-agent.environment.PYTHONPATH = "/var/lib/hermes/.hermes/plugins/cortex/.hermes-venv/lib/python3.12/site-packages:/var/lib/hermes/python-patches";
+  systemd.services.hermes-agent.environment.LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.zlib}/lib";
+  systemd.services.hermes-agent.environment.CORTEX_CONFIG = "/var/lib/hermes/.hermes/cortex/config.yaml";
 
   systemd.services.hermes-agent.serviceConfig.TimeoutStopSec = "210s";
 

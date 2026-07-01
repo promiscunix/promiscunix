@@ -6,6 +6,9 @@
 }: {
   wayland.windowManager.hyprland = {
     enable = true;
+    # Keep the current generated config format explicit so Home Manager does
+    # not warn when the default changes for newer state versions.
+    configType = "hyprlang";
 
     settings = {
       # Monitor configuration (auto-detect)

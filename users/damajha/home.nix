@@ -16,6 +16,7 @@ in {
   imports =
     [
       ../../modules/userLevel/helix
+      ../../modules/userLevel/ttt
       ../../modules/userLevel/starship
       ../../modules/userLevel/zellij
       ../../modules/userLevel/fish

@@ -1,0 +1,12 @@
+# hosts/guacamole-book/systemInfo.toml
+hostName = "guacamole-book"
+profile = "server" # keep shared desktop/Home Manager payloads off this 2GB thin client
+mainUser = "damajha"
+
+[accounts]
+# Intentionally not used by the host config yet; retained for future consistency
+# if this box graduates to the normal accounts/Home Manager path.
+includeRoles = []
+extraUsers   = []
+exclude      = []
+wheelRole    = "admin"

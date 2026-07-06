@@ -20,6 +20,7 @@ in {
       ../../modules/userLevel/starship
       ../../modules/userLevel/zellij
       ../../modules/userLevel/fish
+      ../../modules/userLevel/fresh
       ../../modules/userLevel/transcode
       # ../../modules/userLevel/tuios
     ]

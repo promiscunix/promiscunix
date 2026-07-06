@@ -16,6 +16,10 @@
       url = "path:/var/lib/hermes/workspace/operator-dashboard";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    bullpen-workbench = {
+      url = "path:/var/lib/hermes/workspace/bullpen-workbench";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -56,6 +60,7 @@
       virtnix = mkHost "virtnix";
       theBullpen = mkHost "theBullpen";
       MTAC = mkHost "MTAC";
+      guacamole-book = mkHost "guacamole-book";
       # add more machines here:
       # desktop = mkHost "desktop";
     };

@@ -15,6 +15,7 @@
     bottom
     eza
     vivaldi
+    firefox # independent browser for WebRTC/microphone diagnosis
     obsidian
     zotero
   ];

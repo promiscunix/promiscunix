@@ -133,6 +133,7 @@
       python3
       nodejs
       ffmpeg
+      python312Packages.edge-tts
     ];
 
     restart = "always";
@@ -145,6 +146,11 @@
   # - gibbs gets explicit ACL access where Hermes needs to read/write
   # - default ACLs preserve shared access for future files created by either side
   systemd.services.hermes-agent.environment.PYTHONPATH = "/var/lib/hermes/.hermes/plugins/cortex/.hermes-venv/lib/python3.12/site-packages:/var/lib/hermes/python-patches";
+  # OpenLive talks to this loopback-only agent surface; the bearer key stays in
+  # the existing root/service-owned environment file, never in the Nix store.
+  systemd.services.hermes-agent.environment.API_SERVER_ENABLED = "true";
+  systemd.services.hermes-agent.environment.API_SERVER_HOST = "127.0.0.1";
+  systemd.services.hermes-agent.environment.API_SERVER_PORT = "8642";
   systemd.services.hermes-agent.environment.LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.zlib}/lib";
   systemd.services.hermes-agent.environment.CORTEX_CONFIG = "/var/lib/hermes/.hermes/cortex/config.yaml";
 

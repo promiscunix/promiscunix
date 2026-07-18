@@ -31,6 +31,10 @@ in {
 
   time.timeZone = "America/Vancouver";
 
+  environment.systemPackages = with pkgs; [
+    git
+  ];
+
   services.openssh = {
     enable = true;
     settings = {

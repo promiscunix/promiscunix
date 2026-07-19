@@ -13,6 +13,7 @@ in {
     ../../modules/core
     (mod "accounts")
     (mod "nas")
+    (mod "media-stack")
 
     inputs.home-manager.nixosModules.home-manager
   ];
@@ -24,14 +25,6 @@ in {
   ];
 
   services.dbus.enable = true; # default on NixOS unless you disabled it
-
-  # TEMPORARY RECOVERY: allow LAN SSH password login while Tailscale is down.
-  # Remove this block after theLibrary is back on Tailscale and key-based SSH works.
-  services.openssh.settings = {
-    PasswordAuthentication = lib.mkForce true;
-    KbdInteractiveAuthentication = lib.mkForce true;
-  };
-  networking.firewall.allowedTCPPorts = [22];
 
   # Required for Home Manager xdg.portal with useUserPackages
   environment.pathsToLink = [ "/share/applications" "/share/xdg-desktop-portal" ];

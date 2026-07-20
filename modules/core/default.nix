@@ -24,13 +24,18 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   # Disable hanging apprise tests (WKD network lookups hang in sandbox)
+  # Override the python3 used by sabnzbd directly for reliability.
   nixpkgs.overlays = [
     (final: prev: {
-      python314Packages = prev.python314Packages.overrideScope (pyfinal: pyprev: {
-        apprise = pyprev.apprise.overridePythonAttrs (old: {
-          doCheck = false;
-        });
-      });
+      sabnzbd = prev.sabnzbd.override {
+        python3 = prev.python3.override {
+          packageOverrides = self: super: {
+            apprise = super.apprise.overridePythonAttrs (old: {
+              doCheck = false;
+            });
+          };
+        };
+      };
     })
   ];
 

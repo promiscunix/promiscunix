@@ -26,11 +26,11 @@ in {
   # Disable hanging apprise tests (WKD network lookups hang in sandbox)
   nixpkgs.overlays = [
     (final: prev: {
-      python314Packages = prev.python314Packages // {
-        apprise = prev.python314Packages.apprise.overridePythonAttrs (old: {
+      python314Packages = prev.python314Packages.overrideScope (pyfinal: pyprev: {
+        apprise = pyprev.apprise.overridePythonAttrs (old: {
           doCheck = false;
         });
-      };
+      });
     })
   ];
 

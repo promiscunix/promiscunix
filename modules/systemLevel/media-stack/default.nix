@@ -74,14 +74,14 @@ in
   services.seerr = {
     enable = true;
     openFirewall = true;
-    dataDir = "${baseDir}/seerr";
+    configDir = "${baseDir}/seerr";
   };
 
   # --- Usenet Downloader (Tailscale only) ---
   services.sabnzbd = {
     enable = true;
     openFirewall = true;
-    dataDir = "${baseDir}/sabnzbd";
+    stateDir = "${baseDir}/sabnzbd";
   };
 
   # --- Firewall ---

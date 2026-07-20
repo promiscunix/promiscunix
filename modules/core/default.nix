@@ -1,5 +1,5 @@
 # modules/core/default.nix
-{ lib, systemInfo, ... }: let
+{ lib, systemInfo, pkgs, ... }: let
   profile = systemInfo.profile or "workstation";
 in {
   imports =
@@ -22,6 +22,17 @@ in {
   boot.supportedFilesystems = ["btrfs"];
 
   nixpkgs.config.allowUnfree = true;
+
+  # Disable hanging apprise tests (WKD network lookups hang in sandbox)
+  nixpkgs.overlays = [
+    (final: prev: {
+      python314Packages = prev.python314Packages // {
+        apprise = prev.python314Packages.apprise.overridePythonAttrs (old: {
+          doCheck = false;
+        });
+      };
+    })
+  ];
 
   security.sudo.wheelNeedsPassword = false;
 

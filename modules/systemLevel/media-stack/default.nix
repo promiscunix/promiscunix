@@ -81,7 +81,6 @@ in
   services.sabnzbd = {
     enable = true;
     openFirewall = true;
-    stateDir = "${baseDir}/sabnzbd";
   };
 
   # --- Firewall ---

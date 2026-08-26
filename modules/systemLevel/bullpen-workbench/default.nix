@@ -4,6 +4,7 @@
   inputs,
   lib,
   pkgs,
+  systemInfo,
   ...
 }: let
   workbenchPort = 8788;
@@ -228,46 +229,6 @@ USAGE
         end
     end
     FISHCFG
-
-    cat > "$HOME/.config/fish/functions/nrs.fish" <<'FISHNRS'
-    function nrs --description "nixos-rebuild switch by host name (MagicDNS)"
-      argparse 'u/user=' 's/sudo' -- $argv; or return 2
-      if test (count $argv) -lt 1
-        echo "usage: nrs HOST [--user USER] [--sudo]"
-        return 2
-      end
-
-      set -l host $argv[1]
-      set -l user (set -q _flag_user; and echo $_flag_user; or echo root)
-      set -l sudo_flag (set -q _flag_sudo; and echo --sudo)
-
-      set -l root ""
-      if set -q PROMISCUNIX_ROOT
-        set root $PROMISCUNIX_ROOT
-      else
-        set root (git -C (pwd) rev-parse --show-toplevel 2>/dev/null)
-      end
-
-      if test -z "$root"
-        echo "nrs: set PROMISCUNIX_ROOT or run inside the repo"
-        return 1
-      end
-
-      set -l sysfile "$root/hosts/$host/systemInfo.toml"
-      if not test -f $sysfile
-        echo "nrs: missing $sysfile"
-        return 1
-      end
-
-      set -l dns_host (string lower $host)
-      if set -q PROMISCUNIX_TAILNET_SUFFIX
-        set -l suffix (string trim -c "." $PROMISCUNIX_TAILNET_SUFFIX)
-        set dns_host "$dns_host.$suffix"
-      end
-
-      nixos-rebuild switch --flake "$root#$host" --target-host "$user@$dns_host" $sudo_flag
-    end
-    FISHNRS
 
     cat > "$HOME/.config/fish/user-overrides.fish.template" <<'FISHTEMPLATE'
     # Fish User Overrides
@@ -498,7 +459,7 @@ in {
       BULLPEN_WORKBENCH_DATA = dataDir;
       BULLPEN_WORKBENCH_SELKIES_URL = "http://127.0.0.1:${toString selkiesPort}";
       BULLPEN_WORKBENCH_OBSIDIAN_NOTE = "/home/damajha/Documents/Obsidian/03 Canonical/Projects/Hermes Shared Desktop Workbench.md";
-      BULLPEN_WORKBENCH_REDIRECT_TO_SELKIES = "true";
+      BULLPEN_WORKBENCH_REDIRECT_TO_SELKIES = "false";
     };
     serviceConfig = {
       Type = "simple";
@@ -511,7 +472,9 @@ in {
     };
   };
 
-  networking.firewall.allowedTCPPorts = [workbenchPort selkiesPort];
+  # Keep the unauthenticated LAN prototype off Tailscale and other interfaces.
+  # Remote access should enter through the authenticated Pangolin front door.
+  networking.firewall.interfaces.${systemInfo.networkInterfaceName}.allowedTCPPorts = [workbenchPort selkiesPort];
 
   environment.systemPackages = [
     bullpenX11Run
@@ -609,6 +572,9 @@ in {
         wantedBy = ["multi-user.target"];
         after = ["bullpen-x11-session.service"];
         wants = ["bullpen-x11-session.service"];
+        environment = {
+          DISPLAY = display;
+        };
         serviceConfig = {
           Type = "simple";
           User = "bullpen";

@@ -35,13 +35,8 @@
 
     settings = {
       model = {
-        default = "gpt-5.5";
+        default = "gpt-5.6-sol";
         provider = "openai-codex";
-      };
-
-      fallback_model = {
-        provider = "kimi-coding";
-        model = "kimi-k2.6";
       };
 
       telegram = {

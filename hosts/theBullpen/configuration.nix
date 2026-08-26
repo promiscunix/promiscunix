@@ -34,6 +34,7 @@ in {
   ];
 
   promiscunix.tailscale.bootstrapSsh = true;
+  promiscunix.tailscale.acceptDns = false;
 
   boot.kernelModules = [
     "coretemp"

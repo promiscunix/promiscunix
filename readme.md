@@ -173,21 +173,20 @@ nixos-rebuild switch \
   --target-host root@<host>
 ```
 
-If you use MagicDNS, `<host>` can be `thelibrary`, `mtac`, etc.
+Use a stable Tailscale IP for `<host>` when Tailscale DNS acceptance is disabled.
 
 ### Fish shortcut: `nrs`
 
-There’s a fish helper function that runs the rebuild by host name over MagicDNS.
+There’s a fish helper function that resolves the host from `tailscale status`
+and runs the rebuild against its Tailscale IP without changing system DNS.
 
 ```fish
 set -gx PROMISCUNIX_ROOT /path/to/nixfiles
 nrs theLibrary
 ```
 
-If your environment doesn’t resolve short names, set the suffix once:
-```fish
-set -gx PROMISCUNIX_TAILNET_SUFFIX tail6d43a.ts.net
-```
+The source machine must be connected to the tailnet and able to run
+`tailscale status`; MagicDNS is not required.
 
 ## Remote install flow (Tailscale-first)
 

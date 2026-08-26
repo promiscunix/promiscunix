@@ -12,10 +12,14 @@
   tagFlag = lib.optionalString (cfg.tags != []) ("--advertise-tags=" + lib.concatStringsSep "," cfg.tags);
   loginFlag = lib.optionalString (cfg.loginServer != "") ("--login-server=" + cfg.loginServer);
   acceptDnsFlag = if cfg.acceptDns then "--accept-dns=true" else "--accept-dns=false";
+  acceptRoutesFlag = if cfg.acceptRoutes then "--accept-routes=true" else "--accept-routes=false";
+  exitNodeFlag = lib.optionalString cfg.clearExitNode "--exit-node=";
   upFlags = lib.concatStringsSep " " (lib.filter (s: s != "") (
     [
       "--hostname=${systemInfo.hostName}"
       acceptDnsFlag
+      acceptRoutesFlag
+      exitNodeFlag
       tagFlag
       loginFlag
     ]
@@ -39,8 +43,18 @@ in {
     };
     acceptDns = lib.mkOption {
       type = lib.types.bool;
-      default = true;
+      default = false;
       description = "Whether to accept DNS settings from Tailscale.";
+    };
+    acceptRoutes = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether to accept subnet routes advertised by other Tailscale nodes.";
+    };
+    clearExitNode = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Whether to clear any selected Tailscale exit node at boot.";
     };
     loginServer = lib.mkOption {
       type = lib.types.str;
@@ -66,6 +80,21 @@ in {
     };
 
     systemd.services.tailscaled.restartIfChanged = lib.mkDefault false;
+
+    systemd.services.tailscale-network-policy = {
+      description = "Enforce local-network-safe Tailscale preferences";
+      after = [ "tailscaled.service" "tailscale-autoconnect.service" ];
+      requires = [ "tailscaled.service" ];
+      partOf = [ "tailscaled.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.tailscale}/bin/tailscale set ${acceptDnsFlag} ${acceptRoutesFlag} ${exitNodeFlag}";
+        RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = "5s";
+      };
+    };
 
     networking.firewall.allowedTCPPorts = lib.mkIf cfg.bootstrapSsh [22];
 
@@ -95,18 +124,10 @@ in {
         Restart = "on-failure";
         RestartSec = "30s";
       };
-      path = [ pkgs.tailscale pkgs.python3 ];
+      path = [ pkgs.tailscale pkgs.jq ];
       script = ''
         set -eu
-        state="$(tailscale status --json 2>/dev/null | python - <<'PY'
-import json, sys
-try:
-    data = json.load(sys.stdin)
-    print(data.get("BackendState", ""))
-except Exception:
-    print("")
-PY
-)"
+        state="$(tailscale status --json 2>/dev/null | jq -r '.BackendState // ""' 2>/dev/null || true)"
         if [ "$state" = "Running" ]; then
           exit 0
         fi

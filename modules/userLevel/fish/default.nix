@@ -18,7 +18,7 @@
   };
 
   programs.fish.functions.nrs = {
-    description = "nixos-rebuild switch by host name (MagicDNS)";
+    description = "nixos-rebuild switch by host name over Tailscale";
     body = ''
       argparse 'u/user=' 's/sudo' -- $argv; or return 2
       if test (count $argv) -lt 1
@@ -48,13 +48,21 @@
         return 1
       end
 
-      set -l dns_host (string lower $host)
-      if set -q PROMISCUNIX_TAILNET_SUFFIX
-        set -l suffix (string trim -c "." $PROMISCUNIX_TAILNET_SUFFIX)
-        set dns_host "$dns_host.$suffix"
+      set -l target_name (string lower $host)
+      set -l target_ip (${pkgs.tailscale}/bin/tailscale status --json 2>/dev/null | ${pkgs.jq}/bin/jq -r --arg host "$target_name" '
+        .Peer // {} | to_entries[] | .value
+        | select(
+            ((.HostName // "") | ascii_downcase) == $host
+            or (((.DNSName // "") | split(".")[0]) | ascii_downcase) == $host
+          )
+        | .TailscaleIPs[0] // empty
+      ' | ${pkgs.coreutils}/bin/head -n 1)
+      if test -z "$target_ip"
+        echo "nrs: no Tailscale peer found for $host"
+        return 1
       end
 
-      nixos-rebuild switch --flake "$root#$host" --target-host "$user@$dns_host" $sudo_flag
+      nixos-rebuild switch --flake "$root#$host" --target-host "$user@$target_ip" $sudo_flag
     '';
   };
 

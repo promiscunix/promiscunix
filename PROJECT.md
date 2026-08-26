@@ -26,8 +26,10 @@ nix flake check
 
 ### Fish Shortcut: `nrs`
 
-From a fish shell, `nrs <host>` uses the host name over MagicDNS and runs
-`nixos-rebuild switch` over Tailscale.
+From a host fish shell, `nrs <host>` resolves the peer through
+`tailscale status` and runs `nixos-rebuild switch` against its Tailscale IP.
+The restricted Bullpen Workbench container intentionally does not provide
+`nrs`; run remote rebuilds from a real host shell.
 
 ```fish
 set -gx PROMISCUNIX_ROOT /path/to/nixfiles

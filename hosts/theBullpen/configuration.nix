@@ -3,6 +3,7 @@
   pkgs,
   inputs,
   lib,
+  systemInfo,
   ...
 }: let
   mods = ../../modules/systemLevel;
@@ -42,6 +43,22 @@ in {
   ];
 
   services.dbus.enable = true; # default on NixOS unless you disabled it
+
+  # Host desktop only — do not install this in the disposable Workbench container.
+  programs.kdeconnect.enable = true;
+
+  # KDE Connect discovery/pairing. Restrict it to the physical LAN, never
+  # Tailscale or a public-facing interface.
+  networking.firewall.interfaces.${systemInfo.networkInterfaceName} = {
+    allowedTCPPortRanges = [{
+      from = 1714;
+      to = 1764;
+    }];
+    allowedUDPPortRanges = [{
+      from = 1714;
+      to = 1764;
+    }];
+  };
 
   # Required for Home Manager xdg.portal with useUserPackages
   environment.pathsToLink = ["/share/applications" "/share/xdg-desktop-portal"];

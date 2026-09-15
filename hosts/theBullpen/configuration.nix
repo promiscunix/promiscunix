@@ -26,7 +26,9 @@ in {
     (mod "browser-search")
     (mod "nas-client")
     (mod "operator-dashboard")
-    (mod "bullpen-workbench")
+    # Experimental browser desktop parked: upstream Selkies archive unavailable.
+    # Keep its module and persistent data; Pangolin/Newt and web-terminal stay enabled.
+    # (mod "bullpen-workbench")
     (mod "obscura-research")
     (mod "optimize/shared")
     (mod "optimize/optiplex")

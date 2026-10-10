@@ -70,13 +70,6 @@ in
     dataDir = "${baseDir}/bazarr";
   };
 
-  # --- Request Manager (Tailscale only) ---
-  services.seerr = {
-    enable = true;
-    openFirewall = true;
-    configDir = "${baseDir}/seerr";
-  };
-
   # --- Usenet Downloader (Tailscale only) ---
   services.sabnzbd = {
     enable = true;
@@ -93,7 +86,6 @@ in
       8787   # Readarr
       9696   # Prowlarr
       6767   # Bazarr
-      5055   # Seerr
       8080   # SABnzbd
     ];
   };

@@ -14,9 +14,13 @@ in {
     (mod "accounts")
     (mod "nas")
     (mod "media-stack")
+    (mod "library-services")
 
     inputs.home-manager.nixosModules.home-manager
   ];
+
+  # Pause synchronization until the recovered @sync data is reviewed.
+  services.syncthing.enable = lib.mkForce false;
 
 
   boot.kernelModules = [
